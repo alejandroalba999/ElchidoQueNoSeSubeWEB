@@ -1,0 +1,49 @@
+.img {
+  width: 25%;
+  padding: 1%;
+  border:2px solid rgba(2, 0, 3, 0.356);
+  border-radius:190px;
+}
+.img:hover{
+ transform: scale(1);
+ transition: 1s ease-in-out;
+  cursor:pointer;
+  text-align: center;
+   width: 100px;
+  height: 100px;
+  border:2px solid rgba(2, 0, 3, 0.356);
+  border-radius:100px; 
+  /* width: 10%;
+  padding: 0.2%; */
+  /* position:absolute; */
+  /* box-shadow: 10px; */
+} 
+
+
+.tableFixHead          { overflow: auto; height: 600px; }
+.tableFixHead thead  { position:sticky; top: 0; z-index: 1; }
+
+/* Just common table stuff. Really. */
+table  { border-collapse: collapse; width: 100%; }
+th     { background:#eee; }
+thead {background: white; top:10%}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
