@@ -10,7 +10,7 @@ export const RegistroPersona = ({ setReload }) => {
         strSegundoApellido: '',
         strCorreo: '',
         strDireccion: '',
-        strContrasena: 'contraseña',
+        strContrasena: '',
         nmbTelefono: '',
         blnActivo: true
     }
@@ -84,6 +84,12 @@ export const RegistroPersona = ({ setReload }) => {
                     <label htmlFor="strCorreo">Correo Electrónico</label>
                     <input type="email" className="form-control" id="strCorreo" placeholder="Correo electrónico" name="strCorreo"
                         value={data.strCorreo}
+                        onChange={handleInputChange} required />
+                </div>
+                <div className="form-group mb-3">
+                    <label htmlFor="strContrasena">Contraseña</label>
+                    <input type="password" className="form-control" id="strContrasena" placeholder="Contraseña" name="strContrasena"
+                        value={data.strContrasena}
                         onChange={handleInputChange} required />
                 </div>
                 <div className="form-group mb-3">

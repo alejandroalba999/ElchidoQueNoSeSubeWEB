@@ -11,7 +11,9 @@ export const GestVehicular = () => {
 
     const [data, setData] = useState([]);
 
-    const [info, setInfo] = useState({})
+    const [info, setInfo] = useState({ cajon: [], persona: [] })
+
+    const [authorization, setAuthorization] = useState(localStorage.getItem('authorization'));
 
     const [mostrarActualizar, setMostrarActualizar] = useState({
         mostrar: false,
@@ -78,13 +80,23 @@ export const GestVehicular = () => {
     }, [reload])
 
     useEffect(() => {
-        axios.get(`http://localhost:3000/api/vehiculo`)
+        let config = {
+            headers: {
+                authorization: authorization,
+            }
+        }
+        axios.get(`http://localhost:3000/api/vehiculo`, config)
             .then(res => {
                 // console.log(res.data.cont.getVehiculos[0].cajon[0].nmbCajon, 'res');
                 const datos = res.data.cont.getVehiculos;
                 setData(datos);
             }).catch((err) => {
-                console.log(err);
+
+                Swal.fire({
+                    icon: 'error',
+                    text: err.response.data.err.message
+                })
+                // console.log(err);
             })
     }, [reload]);
 

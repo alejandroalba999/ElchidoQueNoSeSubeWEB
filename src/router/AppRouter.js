@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import {
     BrowserRouter as Router,
     Switch,
@@ -13,13 +13,20 @@ import { Navbar } from '../components/shared/Navbar'
 import { AuthRouter } from '../router/AuthRouter'
 
 export const AppRouter = () => {
+    const [token, setToken] = useState(localStorage.getItem('authorization'));
+    const getToken = () => {
+        console.log('here i am');
+    }
+
     return (
+
         <Router>
             <div>
                 <Switch>
+
                     <Route path="/auth" component={AuthRouter} />
 
-                    <Route exact path='/dashboard' >
+                    <Route exact path='/dashboard'>
                         <Navbar />
                         <div className="container">
                             <CajonesLibres />

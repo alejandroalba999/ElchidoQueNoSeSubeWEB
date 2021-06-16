@@ -1,17 +1,58 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import caleo_logo from '../../assets/images/caleo_logo.png'
-import {
-    Link
-} from "react-router-dom";
 import './styles.css'
 import { UserContext } from './UserContext';
+import axios from 'axios';
+import Swal from 'sweetalert2'
+import { useHistory } from 'react-router';
 
 export const Login = () => {
-
+    const history = useHistory();
     const { setUser } = useContext(UserContext);
 
-    return (
+    const initialState = {
+        strCorreo: '',
+        strContrasena: '',
+    }
+    const [data, setData] = useState(initialState);
 
+    const handleInputChange = ({ target }) => {
+        setData({
+            ...data,
+            [target.name]: target.value
+        });
+    }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await axios.post(`http://localhost:3000/api/login/`, data)
+                .then(res => {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        text: `${res.data.usuario.strNombre} se logeo exitosamente`,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    localStorage.setItem('authorization', res.data.token)
+                    history.push(`/dashboard`);
+
+
+
+                })
+        } catch (error) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                text: error.response.data.err.message,
+                showConfirmButton: false,
+                timer: 1500
+            })
+        }
+
+    }
+
+    return (
 
         <div className="wrapper fadeInDown">
             <div id="formContent">
@@ -21,13 +62,13 @@ export const Login = () => {
                 </div>
 
 
-                <form>
-                    <input type="text" id="login" className="fadeIn second estiloBoton" name="email" placeholder="Correo Electrónico" />
-                    <input type="text" id="password" className="fadeIn third estiloBoton" name="password" placeholder="Contraseña" />
-                    <Link to='/dashboard' type="submit" className="btn btn-primary fadeIn fourth mb-2 mt-2" onClick={() => setUser({
-                        id: 123,
-                        name: 'Nata'
-                    })} >Iniciar Sesión</Link>
+                <form onSubmit={handleSubmit}>
+                    <input type="email" id="strCorreo" className="fadeIn second estiloBoton" name="strCorreo" placeholder="Correo Electrónico" value={data.strCorreo}
+                        onChange={handleInputChange} required />
+                    <input type="password" id="strContrasena" className="fadeIn third estiloBoton" name="strContrasena" placeholder="Contraseña" value={data.strContrasena}
+                        onChange={handleInputChange} required />
+                    <input type="submit" id="password" className="btn btn-primary fadeIn fourth mb-2 mt-2" value="Iniciar Sesión" />
+
                 </form>
 
 
