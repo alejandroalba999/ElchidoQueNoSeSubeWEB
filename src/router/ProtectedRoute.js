@@ -1,11 +1,17 @@
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
 import { Navbar } from "../components/shared/Navbar"
+import jwt_decode from "jwt-decode";
 
-function ProtectedRoute({ component: Component, ...restOfProps }) {
+
+
+
+function ProtectedRoute({ component: Component, role, ...restOfProps }) {
     const isAuthenticated = localStorage.getItem("authorization");
+    const decoded = jwt_decode(localStorage.getItem('authorization'));
+    console.log(decoded.usuario.blnAdmin, role);
 
-    console.log(restOfProps)
+
     return (
         <>
             <Navbar />

@@ -9,7 +9,6 @@ import { CajonesLibres } from '../components/dashboard/CajonesLibres'
 import { GestCajones } from '../components/cajones/GestCajones';
 import { GestUsuarios } from '../components/usuarios/GestUsuarios';
 import { GestVehicular } from '../components/vehiculos/GestVehicular';
-import { Navbar } from '../components/shared/Navbar'
 import { AuthRouter } from '../router/AuthRouter'
 import ProtectedRoute from './ProtectedRoute';
 
@@ -24,21 +23,21 @@ export const AppRouter = () => {
 
                     <Route path="/auth" component={AuthRouter} />
 
-                    <ProtectedRoute exact path='/dashboard' component={CajonesLibres} />
+                    <ProtectedRoute exact path='/dashboard' component={CajonesLibres} role={false} />
 
 
 
-                    <ProtectedRoute exact path='/gestionVehicular' component={GestVehicular} />
+                    <ProtectedRoute exact path='/gestionVehicular' component={GestVehicular} role={false} />
 
 
 
-                    <ProtectedRoute exact path='/gestionUsuarios' component={GestUsuarios} />
+                    <ProtectedRoute exact path='/gestionUsuarios' component={GestUsuarios} role={true} />
 
 
-                    <ProtectedRoute exact path='/gestionCajones' component={GestCajones} />
+                    <ProtectedRoute exact path='/gestionCajones' component={GestCajones} role={true} />
 
 
-                    <ProtectedRoute exact path='/rentar/:_id' component={GestCajones} />
+                    <ProtectedRoute exact path='/rentar/:_id' component={GestCajones} role={false} />
 
 
                     <Redirect to="/auth/login" />
