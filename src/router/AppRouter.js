@@ -11,12 +11,10 @@ import { GestUsuarios } from '../components/usuarios/GestUsuarios';
 import { GestVehicular } from '../components/vehiculos/GestVehicular';
 import { Navbar } from '../components/shared/Navbar'
 import { AuthRouter } from '../router/AuthRouter'
+import ProtectedRoute from './ProtectedRoute';
+
 
 export const AppRouter = () => {
-    const [token, setToken] = useState(localStorage.getItem('authorization'));
-    const getToken = () => {
-        console.log('here i am');
-    }
 
     return (
 
@@ -26,40 +24,22 @@ export const AppRouter = () => {
 
                     <Route path="/auth" component={AuthRouter} />
 
-                    <Route exact path='/dashboard'>
-                        <Navbar />
-                        <div className="container">
-                            <CajonesLibres />
-                        </div>
-                    </Route>
+                    <ProtectedRoute exact path='/dashboard' component={CajonesLibres} />
 
-                    <Route exact path='/gestionVehicular' >
-                        <Navbar />
-                        <div className="container">
-                            <GestVehicular />
-                        </div>
-                    </Route>
 
-                    <Route exact path='/gestionUsuarios' >
-                        <Navbar />
-                        <div className="container">
-                            <GestUsuarios />
-                        </div>
-                    </Route>
 
-                    <Route exact path='/gestionCajones' >
-                        <Navbar />
-                        <div className="container">
-                            <GestCajones />
-                        </div>
-                    </Route>
+                    <ProtectedRoute exact path='/gestionVehicular' component={GestVehicular} />
 
-                    <Route exact path='/rentar/:_id' >
-                        <Navbar />
-                        <div className="container">
-                            <GestCajones />
-                        </div>
-                    </Route>
+
+
+                    <ProtectedRoute exact path='/gestionUsuarios' component={GestUsuarios} />
+
+
+                    <ProtectedRoute exact path='/gestionCajones' component={GestCajones} />
+
+
+                    <ProtectedRoute exact path='/rentar/:_id' component={GestCajones} />
+
 
                     <Redirect to="/auth/login" />
 
