@@ -23,11 +23,11 @@ export const AppRouter = () => {
 
                     <Route path="/auth" component={AuthRouter} />
 
-                    <ProtectedRoute exact path='/dashboard' component={CajonesLibres} role={false} />
+                    <ProtectedRoute exact path='/dashboard' component={CajonesLibres} role={null} />
 
 
 
-                    <ProtectedRoute exact path='/gestionVehicular' component={GestVehicular} role={false} />
+                    <ProtectedRoute exact path='/gestionVehicular' component={GestVehicular} role={null} />
 
 
 
@@ -37,7 +37,7 @@ export const AppRouter = () => {
                     <ProtectedRoute exact path='/gestionCajones' component={GestCajones} role={true} />
 
 
-                    <ProtectedRoute exact path='/rentar/:_id' component={GestCajones} role={false} />
+                    <ProtectedRoute exact path='/rentar/:_id' component={GestCajones} role={true} />
 
 
                     <Redirect to="/auth/login" />

@@ -3,8 +3,21 @@ import caleo_logo from '../../assets/images/caleo_logo.png'
 import {
     Link
 } from "react-router-dom";
+import { useHistory } from 'react-router';
+import jwt_decode from "jwt-decode";
+import './App.css'
+
 
 export const Navbar = () => {
+    const history = useHistory();
+    let decoded = localStorage.getItem('authorization');
+    if (localStorage.getItem("authorization")) {
+        decoded = jwt_decode(localStorage.getItem("authorization"));
+    }
+
+    console.log(window.screen);
+
+
 
     return (
         <div style={{ borderBottom: '3px solid #d1d1d1' }}>
@@ -14,8 +27,8 @@ export const Navbar = () => {
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
-                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul className="navbar-nav mr-auto">
+                    <div className="navbar-collapse collapse" id="navbarSupportedContent">
+                        <ul className="navbar-nav">
                             <li className="nav-item m-1 active">
                                 <Link className="nav-link active" aria-current="page" to='/dashboard'> <i className="fa fa-home m-1"></i> Inicio</Link>
                             </li>
@@ -28,16 +41,22 @@ export const Navbar = () => {
                             <li className="nav-item m-1">
                                 <Link className="nav-link" to='/gestionCajones' > <i className="fa fa-th m-1"></i>Gestión de Cajones</Link>
                             </li>
-                            <li className="nav-item m-1" id=" dropdownMenuButton" data-toggle="dropdown">
 
-                                <a className="nav-link" style={{ cursor: 'pointer' }}> <i className="fa fa-user m-1"></i>Mi cuenta</a>
+                            <li className=" nav-item pull-right">
+                                <div className="row">
+                                    <div className="col-8 ">
 
-                                <div className="dropdown-menu dropleft" aria-labelledby="dropdownMenuButton">
-                                    <a className="dropdown-item" >Mi cuenta</a>
-                                    <a className="dropdown-item" >Cerrar Sesión</a>
+                                    </div>
+                                    <div className="col-2 ">
+                                        <img src={`http://localhost:3000/api/imagen?ruta=personas&img=${decoded.usuario.strImg}`} className="imga" alt="Logo" />
+                                    </div>
+                                    <div className="col-2 ">
+                                        <Link className="nav-link logOut" to="" onClick={() => (history.push(`/auth/login`), localStorage.removeItem('authorization'))} ><i className="fas fa-sign-out-alt" > <b style={{ fontFamily: '"Poppins", sans-serif' }}>Salir</b></i></Link>
+                                    </div>
                                 </div>
-
                             </li>
+
+
                         </ul>
                     </div>
                 </div>
@@ -46,6 +65,7 @@ export const Navbar = () => {
             </nav>
 
         </div>
+
 
     )
 }

@@ -24,7 +24,7 @@ export const CajonesLibres = () => {
                             data.map(cajon => {
                                 return (
 
-                                    < div className="col-4 mb-3" key={cajon._id}>
+                                    < div className=" col-md-4 col-sm-12 col-xs-12  mb-3" key={cajon._id}>
                                         <div className="card shadow">
                                             <div className="card-header">
 

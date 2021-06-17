@@ -1,0 +1,40 @@
+ /* .navbar-nav {
+    width: 100%;
+    text-align: center;
+   
+  } */
+
+  .imga {
+  cursor: pointer;
+  margin-top: 3%;
+  width: 50%;
+  border:2px solid rgba(2, 0, 3, 0.356);
+  border-radius:190px;
+ 
+  }
+
+  
+    /* .navbar-nav > li {
+      float: none;
+      display: inline-block;
+    } */
+
+    .pull-right{
+     position: absolute;
+     right: 5%;
+    }
+
+    @media only screen and (max-width: 990px) {
+     .pull-right{
+     position: static;
+     right: 5%; 
+      }
+       .imga {
+      cursor: pointer;
+  width: 2%;
+  border:2px solid rgba(2, 0, 3, 0.356);
+  border-radius:190px;
+  position: relative;
+  
+  }
+    }

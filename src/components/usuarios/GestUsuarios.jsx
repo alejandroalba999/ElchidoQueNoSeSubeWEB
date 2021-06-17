@@ -10,6 +10,7 @@ export const GestUsuarios = () => {
     const [reload, setReload] = useState(false)
 
     const [data, setData] = useState([]);
+    const [authorization, setAuthorization] = useState(localStorage.getItem('authorization'));
 
     const [mostrarActualizar, setMostrarActualizar] = useState({
         mostrar: false,
@@ -72,7 +73,7 @@ export const GestUsuarios = () => {
     }, [reload])
 
     useEffect(() => {
-        axios.get(`http://localhost:3000/api/persona`)
+        axios.get(`http://localhost:3000/api/persona`, { headers: { 'authorization': authorization } })
             .then(res => {
                 const datos = res.data.cont.persona;
                 setData(datos);

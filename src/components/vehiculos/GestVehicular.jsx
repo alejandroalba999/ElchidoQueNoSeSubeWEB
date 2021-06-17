@@ -80,12 +80,7 @@ export const GestVehicular = () => {
     }, [reload])
 
     useEffect(() => {
-        let config = {
-            headers: {
-                authorization: authorization,
-            }
-        }
-        axios.get(`http://localhost:3000/api/vehiculo`, config)
+        axios.get(`http://localhost:3000/api/vehiculo`, { headers: { 'authorization': authorization } })
             .then(res => {
                 // console.log(res.data.cont.getVehiculos[0].cajon[0].nmbCajon, 'res');
                 const datos = res.data.cont.getVehiculos;
