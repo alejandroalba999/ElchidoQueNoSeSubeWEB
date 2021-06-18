@@ -13,19 +13,13 @@ function ProtectedRoute({ component: Component, role, ...restOfProps }) {
     if (localStorage.getItem('authorization')) {
         decoded = jwt_decode(localStorage.getItem('authorization'));
         // console.log('entrando');
-        if (decoded.usuario.blnAdmin != role && role != null) {
+        if (decoded.usuario.blnAdmin !== role && role !== null) {
             Swal.fire({
                 icon: 'error',
                 text: 'No cuenta con permisos para acceder a esta ruta'
             })
         }
     }
-
-
-
-
-
-
 
     return (
         <>
@@ -34,7 +28,7 @@ function ProtectedRoute({ component: Component, role, ...restOfProps }) {
                 <Route
                     {...restOfProps}
                     render={(props) =>
-                        isAuthenticated ? (decoded.usuario.blnAdmin === role ? <Component {...props} /> : (role == null ? <Component {...props} /> : <Redirect to="dashboard" />)) : <Redirect to="/auth/login" />
+                        isAuthenticated ? (decoded.usuario.blnAdmin === role ? <Component {...props} /> : (role === null ? <Component {...props} /> : <Redirect to="dashboard" />)) : <Redirect to="/auth/login" />
                     }
                 />
             </div>

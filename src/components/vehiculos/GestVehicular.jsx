@@ -100,14 +100,14 @@ export const GestVehicular = () => {
             <div className="card shadow mt-4">
                 <div className="card-body">
                     <div className="row">
-                        <div className="col-4 mt-3">
+                        <div className="col-md-4 col-lg-4 col-sm-12 mt-3">
                             {
                                 mostrar ? <ActualizarVehiculo id={id} setReload={setReload} reload={reload} />
                                     :
                                     <RegistroVehiculo setReload={setReload} />
                             }
                         </div>
-                        <div className="col-8 mt-3">
+                        <div className="col-md-8 col-lg-8 col-sm-12 mt-3">
                             <div className="container">
                                 <div className="table-responsive tableFixHead">
                                     <table className="table">

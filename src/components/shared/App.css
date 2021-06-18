@@ -1,12 +1,14 @@
 
-
+   #navbarChico{
+       display:none;
+   }
   .imga {
   cursor: pointer;
-  margin-top: 10%;
-  width: 30px;
-  height: 30px;
-  border:2px solid rgba(2, 0, 3, 0.356);
-  border-radius:30px;
+  margin-top: 25%;
+  width: 25px;
+  height: 25px;
+  /* border:2px solid rgba(2, 0, 3, 0.356); */
+  border-radius:25px;
  
   }
 
@@ -16,12 +18,12 @@
   }
    
 
-    .pull-right{
-     position: absolute;
-     right: 5%;
-    }
-
     @media only screen and (max-width: 990px) {
-     
+     #navbarGrande{
+         display: none;
+     }
+      #navbarChico{
+       display:inline;
+     }
   
     }

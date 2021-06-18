@@ -41,10 +41,11 @@ export const Login = () => {
 
                 })
         } catch (error) {
+            // console.log(error.response.status, 'error');
             Swal.fire({
                 position: 'center',
                 icon: 'error',
-                text: error.response.data.err.message,
+                text: error.response.status == 200 ? error.response.data.err.message : 'Error en el sistema',
                 showConfirmButton: false,
                 timer: 1500
             })
