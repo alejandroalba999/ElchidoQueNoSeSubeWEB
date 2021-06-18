@@ -1,23 +1,20 @@
- /* .navbar-nav {
-    width: 100%;
-    text-align: center;
-   
-  } */
+
 
   .imga {
   cursor: pointer;
-  margin-top: 3%;
-  width: 50%;
+  margin-top: 10%;
+  width: 30px;
+  height: 30px;
   border:2px solid rgba(2, 0, 3, 0.356);
-  border-radius:190px;
+  border-radius:30px;
  
   }
 
-  
-    /* .navbar-nav > li {
-      float: none;
-      display: inline-block;
-    } */
+  #formPerfil{
+  border-left: 1px solid rgba(0, 0, 0, 0.336);
+  padding-left: 10px ;
+  }
+   
 
     .pull-right{
      position: absolute;
@@ -25,16 +22,6 @@
     }
 
     @media only screen and (max-width: 990px) {
-     .pull-right{
-     position: static;
-     right: 5%; 
-      }
-       .imga {
-      cursor: pointer;
-  width: 2%;
-  border:2px solid rgba(2, 0, 3, 0.356);
-  border-radius:190px;
-  position: relative;
+     
   
-  }
     }
