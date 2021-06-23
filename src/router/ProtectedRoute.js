@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Redirect, Route } from "react-router-dom";
 import { Navbar } from "../components/shared/Navbar"
+import { Footer } from "../components/shared/Footer.jsx";
 import jwt_decode from "jwt-decode";
 import Swal from "sweetalert2";
 
@@ -9,6 +10,7 @@ import Swal from "sweetalert2";
 
 function ProtectedRoute({ component: Component, role, ...restOfProps }) {
     const isAuthenticated = localStorage.getItem("authorization");
+    const [reload, setReload] = useState(false)
     let decoded = localStorage.getItem('authorization');
     if (localStorage.getItem('authorization')) {
         decoded = jwt_decode(localStorage.getItem('authorization'));
@@ -21,9 +23,10 @@ function ProtectedRoute({ component: Component, role, ...restOfProps }) {
         }
     }
 
+
     return (
         <>
-            <Navbar />
+            <Navbar setReload={setReload} reload={reload} />
             <div className="container">
                 <Route
                     {...restOfProps}
@@ -32,6 +35,7 @@ function ProtectedRoute({ component: Component, role, ...restOfProps }) {
                     }
                 />
             </div>
+            <Footer />
         </>
 
     );

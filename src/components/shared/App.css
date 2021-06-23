@@ -11,10 +11,32 @@
   border-radius:25px;
  
   }
+   .imga:hover {
+  cursor: pointer;
+  border: solid 0.5px black;
+  padding: 5%;
+  width: 30px;
+  height: 30px;
+  /* border:2px solid rgba(2, 0, 3, 0.356); */
+  border-radius:30px;
+ 
+  }
 
   #formPerfil{
   border-left: 1px solid rgba(0, 0, 0, 0.336);
   padding-left: 10px ;
+  }
+  .imagen-nav{
+  max-width: 70px;
+  transform: revert;
+  border: solid 2px rgba(0, 0, 0, 0.397);
+  
+  }
+  
+  .card-footer{
+    position: fixed;
+    Width: 100%;
+    bottom: 0;
   }
    
 

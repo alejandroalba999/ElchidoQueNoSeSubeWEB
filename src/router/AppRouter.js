@@ -11,6 +11,7 @@ import { GestUsuarios } from '../components/usuarios/GestUsuarios';
 import { GestVehicular } from '../components/vehiculos/GestVehicular';
 import { AuthRouter } from '../router/AuthRouter'
 import ProtectedRoute from './ProtectedRoute';
+import { Perfil } from '../components/account/Perfil';
 
 
 export const AppRouter = () => {
@@ -25,6 +26,7 @@ export const AppRouter = () => {
 
                     <ProtectedRoute exact path='/dashboard' component={CajonesLibres} role={null} />
 
+                    <ProtectedRoute exact path='/account/perfil' component={Perfil} role={null} />
 
 
                     <ProtectedRoute exact path='/gestionVehicular' component={GestVehicular} role={null} />

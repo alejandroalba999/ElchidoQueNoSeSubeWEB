@@ -45,7 +45,7 @@ export const Login = () => {
             Swal.fire({
                 position: 'center',
                 icon: 'error',
-                text: error.response.status == 200 ? error.response.data.err.message : 'Error en el sistema',
+                text: error.response.status == 400 ? error.response.data.err.message : 'Error en el sistema',
                 showConfirmButton: false,
                 timer: 1500
             })
