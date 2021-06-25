@@ -82,49 +82,49 @@ export const ActualizarPersonas = ({ setReload, id }) => {
                 </div>
             </div>
             <hr />
-            <form onSubmit={handleUpdate}>
+            <form onSubmit={handleUpdate} className="was-validated">
                 <div className="form-group mb-3">
                     <label htmlFor="strNombre">Nombre</label>
-                    <input type="text" className="form-control" id="strNombre" placeholder="Nombre(s)" name="strNombre"
+                    <input type="text" className="form-control form-control-sm" id="strNombre" placeholder="Nombre(s)" name="strNombre"
                         value={newData.strNombre}
                         onChange={handleInputChange} required />
                 </div>
                 <div className="form-group mb-3">
                     <label htmlFor="strPrimerApellido">Primer Apellido</label>
-                    <input type="text" className="form-control" id="strPrimerApellido" placeholder="Primer Apellido" name="strPrimerApellido"
+                    <input type="text" className="form-control form-control-sm" id="strPrimerApellido" placeholder="Primer Apellido" name="strPrimerApellido"
                         value={newData.strPrimerApellido}
                         onChange={handleInputChange} required />
                 </div>
                 <div className="form-group mb-3">
                     <label htmlFor="strSegundoApellido">Segundo Apellido</label>
-                    <input type="text" className="form-control" id="strSegundoApellido" placeholder="Segundo Apellido" name="strSegundoApellido"
+                    <input type="text" className="form-control form-control-sm" id="strSegundoApellido" placeholder="Segundo Apellido" name="strSegundoApellido"
                         value={newData.strSegundoApellido}
                         onChange={handleInputChange} required />
                 </div>
-                <div className="form-group mb-3">
+                {/* <div className="form-group mb-3">
                     <label htmlFor="strCorreo">Correo Electrónico</label>
-                    <input type="email" className="form-control" id="strCorreo" placeholder="Correo electrónico" name="strCorreo"
+                    <input type="email" className="form-control form-control-sm" id="strCorreo" placeholder="Correo electrónico" name="strCorreo"
                         value={newData.strCorreo}
                         onChange={handleInputChange} required />
-                </div>
+                </div> */}
                 <div className="form-group mb-3">
                     <label htmlFor="nmbTelefono">Teléfono</label>
-                    <input type="number" className="form-control" id="nmbTelefono" placeholder="Teléfono" name="nmbTelefono"
+                    <input type="number" className="form-control form-control-sm" id="nmbTelefono" placeholder="Teléfono" name="nmbTelefono"
                         value={newData.nmbTelefono}
                         onChange={handleInputChange} required />
                 </div>
                 <div className="form-group mb-3">
                     <label htmlFor="strDireccion">Dirección</label>
-                    <input type="text" className="form-control" id="strCorreo" placeholder="Dirección" name="strDireccion"
+                    <input type="text" className="form-control form-control-sm" id="strCorreo" placeholder="Dirección" name="strDireccion"
                         value={newData.strDireccion}
                         onChange={handleInputChange} required />
                 </div>
-                <div className="form-group mb-3">
+                {/* <div className="form-group mb-3">
                     <label htmlFor="strContrasena">Contraseña</label>
-                    <input type="password" className="form-control" id="strContrasena" placeholder="Contraseña" name="strContrasena"
+                    <input type="password" className="form-control form-control-sm" id="strContrasena" placeholder="Contraseña" name="strContrasena"
                         value={newData.strContrasena}
                         onChange={handleInputChange} required />
-                </div>
+                </div> */}
                 <div className=" form-group row text-right" >
                     <div className="col-12 text-center">
                         <button className="btn btn-primary m-1" type="submit">Actualizar</button>

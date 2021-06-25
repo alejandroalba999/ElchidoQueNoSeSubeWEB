@@ -11,6 +11,7 @@ export const getCajones = async () => {
             _id: cajones._id,
             nmbCajon: cajones.nmbCajon,
             strDescripcion: cajones.strDescripcion,
+            blnRentado: cajones.blnRentado,
             blnActivo: cajones.blnActivo
         }
     })

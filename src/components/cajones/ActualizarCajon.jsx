@@ -12,6 +12,7 @@ export const ActualizarCajon = ({ setReload, id, reload }) => {
     }
 
     const handleInputChange = ({ target }) => {
+        console.log(target.value);
         setNewData({
             ...newData,
             [target.name]: target.value
@@ -20,7 +21,6 @@ export const ActualizarCajon = ({ setReload, id, reload }) => {
 
     const update = async (e) => {
         e.preventDefault();
-        console.log(newData);
         try {
             await axios.put(`http://localhost:3000/api/cajon/`, newData)
                 .then(res => {
@@ -61,7 +61,7 @@ export const ActualizarCajon = ({ setReload, id, reload }) => {
 
 
     return (
-        <div className="container">
+        <div className="container" className="was-validated">
             <div className="row">
                 <div className="col-11 col-lg-11">
                     <h5 className="card-title">Actualizar Cajón</h5>
@@ -75,16 +75,17 @@ export const ActualizarCajon = ({ setReload, id, reload }) => {
             <form onSubmit={update} >
                 <div className="form-group mb-3">
                     <label htmlFor="number">Número del cajón</label>
-                    <input type="number" className="form-control" id="number" placeholder="Número del cajón" name="nmbCajon"
+                    <input type="number" className="form-control form-control-sm" id="number" placeholder="Número del cajón" name="nmbCajon"
                         value={newData ? newData.nmbCajon : ''}
                         onChange={handleInputChange} required />
                 </div>
                 <div className="form-group mb-3">
                     <label htmlFor="description">Descripción del Cajón</label>
-                    <input type="text" className="form-control" id="description" placeholder="Descripción del Cajón" name="strDescripcion"
+                    <input type="text" className="form-control form-control-sm" id="description" placeholder="Descripción del Cajón" name="strDescripcion"
                         value={newData ? newData.strDescripcion : ''}
                         onChange={handleInputChange} required />
                 </div>
+
                 <div className=" form-group row text-right" >
                     <div className="col-12 text-center">
                         <button className="btn btn-primary m-1" type="submit">Actualizar</button>

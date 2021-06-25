@@ -1,22 +1,27 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import jwt_decode from "jwt-decode";
-import { Navbar } from "../shared/Navbar.jsx"
 import Swal from 'sweetalert2';
-const arrayTemas = [
-    { color: '#0d6efd', obscuro: false },
-    { color: '#198754', obscuro: false },
-    { color: '#0dcaf0', obscuro: false },
-    { color: '#212529', obscuro: true },
-    { color: '#ffc107', obscuro: false },
-    // { color: 'bg-info' },
-    // { color: 'bg-dark' },
-    { color: '#ffff', obscuro: false }]
-let decoded = localStorage.getItem('authorization');
-if (localStorage.getItem("authorization")) {
-    decoded = jwt_decode(localStorage.getItem("authorization"));
-}
+import { useHistory } from 'react-router';
+
+
 
 export const Perfil = () => {
+    const arrayTemas = [
+        { color: '#0d6efd', obscuro: true },
+        { color: '#198754', obscuro: true },
+        { color: '#00CED1', obscuro: false },
+        { color: '#ADD8E6', obscuro: false },
+        { color: '#212529', obscuro: true },
+        { color: '#ffc107', obscuro: false },
+        { color: '#808080', obscuro: true },
+        { color: '#ffff', obscuro: false }]
+    let decoded = localStorage.getItem('authorization');
+    if (localStorage.getItem("authorization")) {
+        decoded = jwt_decode(localStorage.getItem("authorization"));
+    } else {
+        history.push('/');
+    }
+    const history = useHistory();
     const cambiarColor = (color, obscuro) => {
         Swal.fire({
             title: 'Sí deseas cambiar el tema deberas inicar sesión nuevamente',
@@ -37,6 +42,9 @@ export const Perfil = () => {
             }
         })
     }
+    useEffect(() => {
+
+    }, [])
 
     return (
         <div className="row">
@@ -45,12 +53,12 @@ export const Perfil = () => {
                     <div className="card-body">
                         <div className="card">
                             <div className="card-body">
-                                <h3>Perfil</h3>
-                                <div className="text-center">
-                                    <img src={`http://localhost:3000/api/imagen?ruta=personas&img=${decoded.usuario.strImg}`} style={{ maxWidth: '65%' }} className="img-fluid" alt="..." />
+                                <h3 className="mb-3">Perfil</h3>
+                                <div className="text-center mb-5">
+                                    <img src={`http://localhost:3000/api/imagen?ruta=personas&img=${decoded.usuario.strImg}`} style={{ maxWidth: '220px', borderRadius: '20%' }} className="img-fluid" alt="..." />
                                 </div>
 
-                                <div className="card" >
+                                <div className="card mb-5" >
                                     <ul className="list-group list-group-flush">
                                         <li className="list-group-item"><strong>Nombre:</strong> <p>Edgar Alejandro Alba Pérez</p> </li>
                                         <li className="list-group-item"><strong>Correo:</strong> <p>alejandroalba@gmail.com</p></li>

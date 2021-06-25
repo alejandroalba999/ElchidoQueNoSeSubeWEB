@@ -14,9 +14,60 @@ export const GestCajones = () => {
         id: ''
     });
 
+    const rentados = (_id, blnRenta) => {
+        // console.log(blnRenta);
+        if (blnRenta == false) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                text: 'No puedes activar un cajón que no se a rentado',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        } else {
+            Swal.fire({
+                text: `¿Estas seguro de liberar el cajón rentado?`,
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: `Desactivar`,
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios.delete(`http://localhost:3000/api/cajonVehiculo/${_id}`)
+                        .then(res => {
+                            console.log(res);
+                            setReload(reload => !reload);
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                text: res.data.msg,
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+
+                        }).catch((error) => {
+                            // console.log(error.response.data.msg);
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                text: error.response.data.msg,
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                        })
+
+                }
+            })
+        }
+
+    }
+
     const estatus = async (_id, blnActivo) => {
         const valor = blnActivo === true ? false : true;
-        console.log(valor);
+        // console.log(valor);
         Swal.fire({
             text: `¿Estas seguro de ${blnActivo === true ? 'desactivar' : 'activar'} el cajón?`,
             icon: 'warning',
@@ -30,7 +81,6 @@ export const GestCajones = () => {
             if (result.isConfirmed) {
                 axios.delete(`http://localhost:3000/api/cajon/${_id}/${valor}`)
                     .then(res => {
-                        console.log(res);
                         setReload(reload => !reload);
                         Swal.fire({
                             position: 'top-end',
@@ -73,6 +123,7 @@ export const GestCajones = () => {
 
     const { data } = useFetchCajones(reload);
 
+
     return (
         <Fragment>
 
@@ -99,6 +150,7 @@ export const GestCajones = () => {
                                             <tr >
                                                 <th scope="col">Num. Cajón</th>
                                                 <th scope="col">Descripción</th>
+                                                <th scope="col" className="text-center">Rentado</th>
                                                 <th className="text-center" scope="col">Activo</th>
                                                 <th className="text-center" scope="col">Acciones</th>
                                             </tr>
@@ -114,8 +166,13 @@ export const GestCajones = () => {
 
                                                         <tr key={cajon._id}>
                                                             <td>{cajon.nmbCajon}</td>
-                                                            <td>{cajon.strDescripcion}</td>
-                                                            <td className="text-center">{(cajon.blnActivo === true) ? <p style={{ cursor: 'pointer' }} onClick={() => estatus(cajon._id, cajon.blnActivo)}><i className="fa fa-check-circle fa-lg" style={{ color: 'green', cursor: 'pointer' }} ></i></p> : <p onClick={() => estatus(cajon._id, cajon.blnActivo)}><i className="fa fa-times-circle fa-lg" style={{ color: 'red', cursor: 'pointer' }}></i></p>}</td>
+                                                            <td style={{ maxWidth: '100px' }}>{cajon.strDescripcion}</td>
+                                                            <td className="text-center" >
+                                                                <label style={{ cursor: 'pointer' }} onClick={() => rentados(cajon._id, cajon.blnRentado)}>
+                                                                    {cajon.blnRentado == true ? <i style={{ color: 'blue' }} class="far fa-check-circle"></i> : <i style={{ color: 'red' }} class="far fa-times-circle"></i>} <i class="fas fa-car"></i>
+                                                                </label>
+                                                            </td>
+                                                            <td className="text-center" style={{ cursor: 'pointer', color: cajon.blnActivo == true ? 'green' : 'red' }} onClick={() => estatus(cajon._id, cajon.blnActivo)} >{cajon.blnActivo === true ? <i class="fas fa-check-circle"></i> : <i class="fas fa-times-circle"></i>}</td>
                                                             <td className="text-center"><button disabled={mostrar} className="btn btn-primary btn-sm" onClick={() => actualizar(cajon._id, cajon)} > <i className="fa fa-edit" ></i></button></td>
                                                         </tr>
                                                     )

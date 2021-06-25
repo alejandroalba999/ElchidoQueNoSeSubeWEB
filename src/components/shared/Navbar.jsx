@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import caleo_logo from '../../assets/images/logo-nav.png'
+import caleo_logo from '../../assets/images/logo-nav.png';
 import {
     Link
 } from "react-router-dom";
 import { useHistory } from 'react-router';
 import jwt_decode from "jwt-decode";
 import './App.css'
-
+import caleo from '../../../src/assets/images/caleo_blanco.png';
 
 export const Navbar = ({ setReload, reload }) => {
     const [color, setColor] = useState(localStorage.getItem('color'));
@@ -15,10 +15,11 @@ export const Navbar = ({ setReload, reload }) => {
     let decoded = localStorage.getItem('authorization');
     if (localStorage.getItem("authorization")) {
         decoded = jwt_decode(localStorage.getItem("authorization"));
+    } else {
+        history.push('/');
     }
 
     useEffect(() => {
-        console.log('desdeNavbar');
         setColor(localStorage.getItem('color'))
     }, [reload])
 
@@ -26,9 +27,9 @@ export const Navbar = ({ setReload, reload }) => {
 
     return (
         <div style={{ borderBottom: '3px solid #d1d1d1', background: color }}>
-            <nav className=" navbar navbar-dark bg-light  navbar-expand-lg" id="navbarChico" style={{ background: color }}>
+            <nav className={colorLetras == 'true' ? "navbar navbar-dark  navbar-expand-lg" : "navbar navbar-light  navbar-expand-lg"} id="navbarChico" style={{ background: color }}>
                 <div className="container-fluid" style={{ marginRight: '50px' }}>
-                    <Link className="navbar-brand" to='/dashboard'><img src={caleo_logo} style={{ maxWidth: '80px', background: colorLetras == true ? 'rgba(255, 255, 255, 0.200)' : '' }} alt="Caleo" /></Link>
+                    <Link className="navbar-brand" to='/dashboard'>  <img src={colorLetras == 'true' ? caleo : caleo_logo} style={{ maxWidth: '80px', border: colorLetras == 'true' ? 'solid 1px white' : 'solid 2px rgba(0, 0, 0, 0.397)' }} alt="Caleo" /></Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
@@ -76,9 +77,12 @@ export const Navbar = ({ setReload, reload }) => {
                     </div>
                 </div>
             </nav>
-            <nav className="navbar navbar-dark  navbar-expand-lg" id="navbarGrande" style={{ background: color }}>
+
+            <nav className={colorLetras == 'true' ? "navbar navbar-dark  navbar-expand-lg" : "navbar navbar-light  navbar-expand-lg"} id="navbarGrande" style={{ background: color }}>
+
+
                 <div className="container-fluid navbar-collapse collapse " >
-                    <Link className="navbar-brand" to='/dashboard'><img src={caleo_logo} style={{ background: colorLetras == true ? 'rgba(255, 255, 255, 0.800)' : '' }} alt="Caleo" className="imagen-nav" /></Link>
+                    <Link className="navbar-brand" to='/dashboard'><img src={colorLetras == 'true' ? caleo : caleo_logo} style={{ border: colorLetras == 'true' ? 'solid 1px white' : 'solid 2px rgba(0, 0, 0, 0.397)' }} alt="Caleo" className="imagen-nav" /></Link>
                     <ul className="navbar-nav">
                         {
                             decoded.usuario.blnAdmin === true ?
@@ -88,13 +92,13 @@ export const Navbar = ({ setReload, reload }) => {
                                         <Link className="nav-link active" aria-current="page" to='/dashboard'> <i className="fa fa-home m-1"></i> Inicio</Link>
                                     </li>
                                     <li className="nav-item m-1">
-                                        <Link className="nav-link" to='/gestionVehicular' > <i className="fa fa-car m-1"></i>Gestión Vehicular</Link>
+                                        <Link className="nav-link active" to='/gestionVehicular' > <i className="fa fa-car m-1"></i>Gestión Vehicular</Link>
                                     </li>
                                     <li className="nav-item m-1">
-                                        <Link className="nav-link" to='/gestionUsuarios'> <i className="fa fa-user m-1"></i>Gestión de Usuarios</Link>
+                                        <Link className="nav-link active" to='/gestionUsuarios'> <i className="fa fa-user m-1"></i>Gestión de Usuarios</Link>
                                     </li>
                                     <li className="nav-item m-1">
-                                        <Link className="nav-link" to='/gestionCajones' > <i className="fa fa-th m-1"></i>Gestión de Cajones</Link>
+                                        <Link className="nav-link active" to='/gestionCajones' > <i className="fa fa-th m-1"></i>Gestión de Cajones</Link>
                                     </li>
                                     <form className="d-flex " id="formPerfil">
                                         <li className="nav-item m-1" >
@@ -117,7 +121,7 @@ export const Navbar = ({ setReload, reload }) => {
                                         <Link className="nav-link active" aria-current="page" to='/dashboard'> <i className="fa fa-home m-1"></i> Inicio</Link>
                                     </li>
                                     <li className="nav-item m-1">
-                                        <Link className="nav-link" to='/gestionVehicular' > <i className="fa fa-car m-1"></i>Gestión Vehicular</Link>
+                                        <Link className="nav-link active" to='/gestionVehicular' > <i className="fa fa-car m-1"></i>Gestión Vehicular</Link>
                                     </li>
 
                                     <form className="d-flex " id="formPerfil">
@@ -139,6 +143,7 @@ export const Navbar = ({ setReload, reload }) => {
 
                 </div>
             </nav>
+
         </div>
 
 

@@ -4,7 +4,9 @@ import axios from 'axios';
 import Swal from 'sweetalert2'
 
 export const ActualizarVehiculo = ({ setReload, id }) => {
-
+    const [persona, setPersona] = useState([]);
+    const [findPersonaId, setfindPersonaId] = useState({});
+    const [authorization, setAuthorization] = useState(localStorage.getItem('authorization'));
     const initialState = {
         _id: id,
         strMarca: '',
@@ -35,7 +37,7 @@ export const ActualizarVehiculo = ({ setReload, id }) => {
         e.preventDefault();
         try {
             console.log(newData);
-            await axios.put(`http://localhost:3000/api/persona/`, newData)
+            await axios.put(`http://localhost:3000/api/vehiculo/`, newData)
                 .then(res => {
                     setReload(reload => !reload);
                     Swal.fire({
@@ -61,14 +63,20 @@ export const ActualizarVehiculo = ({ setReload, id }) => {
     useEffect(async () => {
         await axios.get(`http://localhost:3000/api/vehiculo/obtenerId/${id}`)
             .then(res => {
-                // console.log(res.data.cont.cajon[0]);
                 const datos = res.data.cont.obtenerVehiculo[0];
+                const persona = datos.persona.length > 0 ? datos.persona[0] : [];
                 setNewData(datos);
-
+                setfindPersonaId(persona)
             }).catch((err) => {
                 console.log(err);
             })
-
+        axios.get(`http://localhost:3000/api/persona/${true}`,)
+            .then(res => {
+                const data = res.data.cont.persona
+                setPersona(data)
+            }).catch((err) => {
+                console.log(err);
+            })
     }, [])
 
 
@@ -83,42 +91,72 @@ export const ActualizarVehiculo = ({ setReload, id }) => {
                 </div>
             </div>
             <hr />
-            <form onSubmit={handleUpdate}>
-                <div className="form-group mb-3">
-                    <label htmlFor="strMarca">Marca</label>
-                    <input type="text" className="form-control" id="strMarca" placeholder="Marca vehiculo" name="strMarca"
-                        value={newData.strMarca}
-                        onChange={handleInputChange} required />
-                </div>
-                <div className="form-group mb-3">
-                    <label htmlFor="strModelo">Modelo</label>
-                    <input type="text" className="form-control" id="strModelo" placeholder="Modelo vehiculo" name="strModelo"
-                        value={newData.strModelo}
-                        onChange={handleInputChange} required />
-                </div>
-                <div className="form-group mb-3">
-                    <label htmlFor="nmbAño">Año</label>
-                    <input type="number" className="form-control" id="nmbAño" placeholder="Año vehiculo" name="nmbAño"
-                        value={newData.nmbAño}
-                        onChange={handleInputChange} required />
+            <form onSubmit={handleUpdate} className="was-validated">
+                <div className="row">
+                    <div className="col-6">
+                        <div className="form-group mb-3">
+                            <label htmlFor="strMarca">Marca</label>
+                            <input type="text" className="form-control form-control-sm" id="strMarca" placeholder="Marca vehiculo" name="strMarca"
+                                value={newData.strMarca}
+                                onChange={handleInputChange} required />
+                        </div>
+                    </div>
+                    <div className="col-6">
+                        <div className="form-group mb-3">
+                            <label htmlFor="strModelo">Modelo</label>
+                            <input type="text" className="form-control form-control-sm" id="strModelo" placeholder="Modelo vehiculo" name="strModelo"
+                                value={newData.strModelo}
+                                onChange={handleInputChange} required />
+                        </div>
+                    </div>
                 </div>
                 <div className="form-group mb-3">
                     <label htmlFor="strDescripcion">Descripción</label>
-                    <input type="text" className="form-control" id="strDescripcion" placeholder="Descripción vehiculo" name="strDescripcion"
+                    <textarea className="form-control form-control-sm" id="strDescripcion" placeholder="Descripción vehiculo" name="strDescripcion"
                         value={newData.strDescripcion}
-                        onChange={handleInputChange} required />
+                        onChange={handleInputChange} required></textarea>
                 </div>
-                <div className="form-group mb-3">
-                    <label htmlFor="strPlacas">Placas</label>
-                    <input type="text" className="form-control" id="strPlacas" placeholder="Placas vehiculo" name="strPlacas"
-                        value={newData.strPlacas}
-                        onChange={handleInputChange} required />
+                <div className="row">
+                    <div className="col-6">
+                        <div className="form-group mb-3">
+                            <label htmlFor="nmbAño">Año</label>
+                            <input type="number" className="form-control form-control-sm" id="nmbAño" placeholder="Año vehiculo" name="nmbAño"
+                                value={newData.nmbAño}
+                                onChange={handleInputChange} required />
+                        </div>
+                    </div>
+                    <div className="col-6">
+                        <div className="form-group mb-3">
+                            <label htmlFor="strPlacas">Placas</label>
+                            <input type="text" className="form-control form-control-sm" id="strPlacas" placeholder="Placas vehiculo" name="strPlacas"
+                                value={newData.strPlacas}
+                                onChange={handleInputChange} required />
+                        </div>
+                    </div>
                 </div>
+
                 <div className="form-group mb-3 ">
                     <label htmlFor="strColor">Color</label>
-                    <input type="text" className="form-control input-color" id="strColor" placeholder="Color vehiculo" name="strColor"
+                    <input type="color" className="form-control form-control-sm" id="strColor" placeholder="Color vehiculo" name="strColor"
                         value={newData.strColor}
-                        onChange={handleInputChange} required />
+                        onChange={handleInputChange} />
+                </div>
+                <div className="form-group mb-3">
+                    <label htmlFor="strPlacas">Asignar persona</label>
+                    <select class="form-select form-select-sm" required name="idPersona" onChange={handleInputChange} aria-label="Default select example" >
+                        <option  >{findPersonaId.strNombre} {findPersonaId.strPrimerApellido ? findPersonaId.strPrimerApellido : ''} {findPersonaId.strSegundoApellido ? findPersonaId.strSegundoApellido : ''}</option>
+                        {
+                            persona.map(personas => {
+
+                                return (
+                                    <option key={personas._id} value={personas._id} style={{ display: personas._id == findPersonaId._id ? 'none' : 'inline' }} >{personas.strNombre} {personas.strPrimerApellido ? personas.strPrimerApellido : ''} {personas.strSegundoApellido ? personas.strSegundoApellido : ''}</option>
+                                )
+
+
+                            })
+                        }
+                    </select>
+
                 </div>
                 <div className=" form-group row text-right" >
                     <div className="col-12 text-center">

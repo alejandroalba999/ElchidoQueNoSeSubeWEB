@@ -61,46 +61,46 @@ export const RegistroPersona = ({ setReload }) => {
         <div className="container">
             <h5 className="card-title">Registro de Personas</h5>
             <hr />
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="was-validated">
                 <div className="form-group mb-3">
                     <label htmlFor="strNombre">Nombre</label>
-                    <input type="text" className="form-control" id="strNombre" placeholder="Nombre(s)" name="strNombre"
+                    <input type="text" className="form-control form-control-sm" id="strNombre" placeholder="Nombre(s)" name="strNombre"
                         value={data.strNombre}
                         onChange={handleInputChange} required />
                 </div>
                 <div className="form-group mb-3">
                     <label htmlFor="strPrimerApellido">Primer Apellido</label>
-                    <input type="text" className="form-control" id="strPrimerApellido" placeholder="Primer Apellido" name="strPrimerApellido"
+                    <input type="text" className="form-control form-control-sm" id="strPrimerApellido" placeholder="Primer Apellido" name="strPrimerApellido"
                         value={data.strPrimerApellido}
                         onChange={handleInputChange} required />
                 </div>
                 <div className="form-group mb-3">
                     <label htmlFor="strSegundoApellido">Segundo Apellido</label>
-                    <input type="text" className="form-control" id="strSegundoApellido" placeholder="Segundo Apellido" name="strSegundoApellido"
+                    <input type="text" className="form-control form-control-sm" id="strSegundoApellido" placeholder="Segundo Apellido" name="strSegundoApellido"
                         value={data.strSegundoApellido}
                         onChange={handleInputChange} required />
                 </div>
                 <div className="form-group mb-3">
                     <label htmlFor="strCorreo">Correo Electrónico</label>
-                    <input type="email" className="form-control" id="strCorreo" placeholder="Correo electrónico" name="strCorreo"
+                    <input type="email" className="form-control form-control-sm" id="strCorreo" placeholder="Correo electrónico" name="strCorreo"
                         value={data.strCorreo}
                         onChange={handleInputChange} required />
                 </div>
                 <div className="form-group mb-3">
                     <label htmlFor="strContrasena">Contraseña</label>
-                    <input type="password" className="form-control" id="strContrasena" placeholder="Contraseña" name="strContrasena"
+                    <input type="password" className="form-control form-control-sm" id="strContrasena" placeholder="Contraseña" name="strContrasena"
                         value={data.strContrasena}
                         onChange={handleInputChange} required />
                 </div>
                 <div className="form-group mb-3">
                     <label htmlFor="nmbTelefono">Teléfono</label>
-                    <input type="number" className="form-control" id="nmbTelefono" placeholder="Teléfono" name="nmbTelefono"
+                    <input type="number" className="form-control form-control-sm" id="nmbTelefono" placeholder="Teléfono" name="nmbTelefono"
                         value={data.nmbTelefono}
                         onChange={handleInputChange} required />
                 </div>
                 <div className="form-group mb-3">
                     <label htmlFor="strDireccion">Dirección</label>
-                    <input type="text" className="form-control" id="strCorreo" placeholder="Dirección" name="strDireccion"
+                    <input type="text" className="form-control form-control-sm" id="strCorreo" placeholder="Dirección" name="strDireccion"
                         value={data.strDireccion}
                         onChange={handleInputChange} required />
                 </div>

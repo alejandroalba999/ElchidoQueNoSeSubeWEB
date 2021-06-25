@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import Swal from 'sweetalert2'
 import './App.css'
+import { useHistory } from 'react-router';
+
 
 export const RegistroVehiculo = ({ setReload }) => {
-
+    const history = useHistory();
     const initialState = {
         strMarca: '',
         strModelo: '',
@@ -63,8 +65,23 @@ export const RegistroVehiculo = ({ setReload }) => {
     useEffect(() => {
         try {
             axios.get(`http://localhost:3000/api/cajon/${true}`,).then((res) => {
-                console.log(res);
                 const data = res.data.cont.cajon;
+                if (data.length < 1) {
+                    Swal.fire({
+                        title: 'No existen cajones disponibles por el momento',
+                        text: '¿Desea registrar un nuevo cajón?',
+                        showCancelButton: true,
+                        reverseButtons: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Aceptar',
+                        cancelButtonText: 'Cancelar'
+                    }).then((resp) => {
+                        if (resp.isConfirmed) {
+                            history.push('/gestionCajones')
+                        }
+                    })
+                }
                 setCajon(data);
             }).catch((error) => {
                 console.log(error);
@@ -87,18 +104,18 @@ export const RegistroVehiculo = ({ setReload }) => {
         <div className="container">
             <h5 className="card-title">Registro de Vehiculos</h5>
             <hr />
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="was-validated">
                 <div className="form-group mb-3">
                     <div className="row">
                         <div className="col-6">
                             <label htmlFor="strMarca">Marca</label>
-                            <input type="text" className="form-control" id="strMarca" placeholder="Marca vehiculo" name="strMarca"
+                            <input type="text" className="form-control form-control-sm" id="strMarca" placeholder="Marca vehiculo" name="strMarca"
                                 value={data.strMarca}
                                 onChange={handleInputChange} required />
                         </div>
                         <div className="col-6">
                             <label htmlFor="strModelo">Modelo</label>
-                            <input type="text" className="form-control" id="strModelo" placeholder="Modelo vehiculo" name="strModelo"
+                            <input type="text" className="form-control form-control-sm" id="strModelo" placeholder="Modelo vehiculo" name="strModelo"
                                 value={data.strModelo}
                                 onChange={handleInputChange} required />
                         </div>
@@ -107,8 +124,7 @@ export const RegistroVehiculo = ({ setReload }) => {
                 </div>
                 <div className="form-group mb-3">
                     <label htmlFor="strDescripcion">Descripción</label>
-                    {/* <input type="text"  /> */}
-                    <textarea className="form-control" id="strDescripcion" placeholder="Descripción vehiculo" name="strDescripcion"
+                    <textarea className="form-control form-control-sm" id="strDescripcion" placeholder="Descripción vehiculo" name="strDescripcion"
                         value={data.strDescripcion}
                         onChange={handleInputChange} required></textarea>
                 </div>
@@ -118,13 +134,13 @@ export const RegistroVehiculo = ({ setReload }) => {
                     <div className="row">
                         <div className="col-6">
                             <label htmlFor="nmbAño">Año</label>
-                            <input type="number" className="form-control" id="nmbAño" placeholder="Año vehiculo" name="nmbAño"
+                            <input type="number" className="form-control form-control-sm" id="nmbAño" placeholder="Año vehiculo" name="nmbAño"
                                 value={data.nmbAño}
                                 onChange={handleInputChange} required />
                         </div>
                         <div className="col-6">
                             <label htmlFor="strPlacas">Placas</label>
-                            <input type="textarea" className="form-control" id="strPlacas" placeholder="Placas vehiculo" name="strPlacas"
+                            <input type="textarea" className="form-control form-control-sm" id="strPlacas" placeholder="Placas vehiculo" name="strPlacas"
                                 value={data.strPlacas}
                                 onChange={handleInputChange} required />
                         </div>
@@ -135,16 +151,16 @@ export const RegistroVehiculo = ({ setReload }) => {
 
                 <div className="form-group mb-3">
                     <label htmlFor="strColor">Color</label>
-                    <input type="color" className="form-control" id="strColor" placeholder="Color vehiculo" name="strColor"
+                    <input type="color" className="form-control form-control-sm" id="strColor" placeholder="Color vehiculo" name="strColor"
                         value={data.strColor}
-                        onChange={handleInputChange} required />
+                        onChange={handleInputChange} />
                 </div>
                 {
                     cargar &&
                     <div className="form-group mb-3">
                         <label htmlFor="strPlacas">Asignar persona</label>
-                        <select className="form-control" name="idPersona" onChange={handleInputChange} aria-label="Default select example" required>
-                            <option value={'DEFALUT'} defaultValue={'Seleccione persona...'}>Seleccione persona ...</option>
+                        <select class="form-select form-select-sm" required name="idPersona" onChange={handleInputChange} aria-label="Default select example" >
+                            <option value={''} defaultValue={'Seleccione persona...'}>Seleccione persona ...</option>
                             {
                                 persona.map(personas => {
                                     return (
@@ -153,14 +169,15 @@ export const RegistroVehiculo = ({ setReload }) => {
                                 })
                             }
                         </select>
+
                     </div>
                 }
                 {
                     cargar &&
-                    <div className="form-group mb-3">
+                    <div className="form-group mb-3" >
                         <label htmlFor="strPlacas">Asignar cajón</label>
-                        <select className="form-control" name="idCajon" onChange={handleInputChange} aria-label="Default select example" required>
-                            <option value={'DEFALUT'} defaultValue={'Seleccione cajón...'}>Seleccione cajón ...</option>
+                        <select class="form-select form-select-sm" required name="idCajon" onChange={handleInputChange} aria-label="Default select example" >
+                            <option value={''} defaultValue={'Seleccione cajón...'} >Seleccione cajón ...</option>
                             {
                                 cajon.map(cajones => {
                                     return (
@@ -170,13 +187,14 @@ export const RegistroVehiculo = ({ setReload }) => {
                             }
                         </select>
                     </div>
+
                 }
 
 
                 <div className=" form-group row text-right" >
                     <div className="col-12 text-center">
                         <button className="btn btn-danger m-1 " type="button" onClick={() => reset()}>Cancelar</button>
-                        <button className="btn btn-primary m-1" type="submit">Registrar</button>
+                        <button className="btn btn-primary m-1" type="submit" >Registrar</button>
                     </div>
                 </div>
             </form >

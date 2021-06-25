@@ -13,6 +13,8 @@ export const GestVehicular = () => {
 
     const [info, setInfo] = useState({ cajon: [], persona: [] })
 
+    const [activoInactivo, setActivoInactivo] = useState([{ estado: 'Activo', blnActivo: true, pointer: true }, { estado: 'Inactivo', blnActivo: false, pointer: false }])
+
     const [authorization, setAuthorization] = useState(localStorage.getItem('authorization'));
 
     const [mostrarActualizar, setMostrarActualizar] = useState({
@@ -45,6 +47,7 @@ export const GestVehicular = () => {
                 axios.delete(`http://localhost:3000/api/vehiculo/${_id}/${valor}`)
                     .then(res => {
                         setReload(reload => !reload);
+                        setActivoInactivo([{ estado: 'Activo', blnActivo: true, pointer: true }, { estado: 'Inactivo', blnActivo: false, pointer: false }])
                         Swal.fire({
                             position: 'top-end',
                             icon: 'success',
@@ -54,7 +57,6 @@ export const GestVehicular = () => {
                         })
 
                     }).catch((error) => {
-                        console.log(error.response.data.msg);
                         Swal.fire({
                             position: 'center',
                             icon: 'error',
@@ -69,8 +71,25 @@ export const GestVehicular = () => {
 
     }
     const infos = (object) => {
-        console.log(object);
         setInfo(object)
+    }
+    const estado = (blnActivo) => {
+        axios.get(`http://localhost:3000/api/vehiculo`, { params: { blnActivo: blnActivo } }, { headers: { 'authorization': authorization } })
+            .then(res => {
+                if (blnActivo == true) {
+                    setActivoInactivo([{ estado: 'Activo', blnActivo: true, pointer: true }, { estado: 'Inactivo', blnActivo: false, pointer: false }])
+                } else {
+                    setActivoInactivo([{ estado: 'Activo', blnActivo: true, pointer: false }, { estado: 'Inactivo', blnActivo: false, pointer: true }])
+                }
+                const datos = res.data.cont.getVehiculos;
+                setData(datos);
+            }).catch((err) => {
+
+                Swal.fire({
+                    icon: 'error',
+                    text: err.response.data.err.message
+                })
+            })
     }
 
     useEffect(() => {
@@ -80,18 +99,16 @@ export const GestVehicular = () => {
     }, [reload])
 
     useEffect(() => {
-        axios.get(`http://localhost:3000/api/vehiculo`, { headers: { 'authorization': authorization } })
+        axios.get(`http://localhost:3000/api/vehiculo`, { params: { blnActivo: true } }, { headers: { 'authorization': authorization } })
             .then(res => {
-                // console.log(res.data.cont.getVehiculos[0].cajon[0].nmbCajon, 'res');
                 const datos = res.data.cont.getVehiculos;
                 setData(datos);
             }).catch((err) => {
 
                 Swal.fire({
                     icon: 'error',
-                    text: err.response.data.err.message
+                    text: err.response.data.error
                 })
-                // console.log(err);
             })
     }, [reload]);
 
@@ -109,6 +126,20 @@ export const GestVehicular = () => {
                         </div>
                         <div className="col-md-8 col-lg-8 col-sm-12 mt-3">
                             <div className="container">
+                                <div  >
+                                    <label className="p-1" style={{ border: 'solid 1px rgba(201, 178, 178, 0.600)', borderRadius: '25%' }}>
+                                        {
+                                            activoInactivo.map(res => {
+                                                return (
+                                                    <span key={res.estado} onClick={() => estado(res.blnActivo)} className={res.pointer == true ? 'badge bg-secondary' : 'badge bg-light text-dark '} style={{ cursor: 'pointer' }}>{res.estado}</span>
+                                                )
+                                            })
+                                        }
+
+                                        {/* <span class="badge bg-light text-dark bg-sm" style={{ cursor: 'pointer' }}>Inactivos</span> */}
+                                    </label>
+                                </div>
+                                <hr />
                                 <div className="table-responsive tableFixHead">
                                     <table className="table">
                                         <thead>
@@ -127,7 +158,7 @@ export const GestVehicular = () => {
                                                 data.map(vehiculo => {
                                                     return (
                                                         <tr key={vehiculo._id}>
-                                                            <td className="text-center"  > {vehiculo.cajon.length > 0 ? vehiculo.cajon[0].nmbCajon : 'N/A'}  <i className="fas fa-car-alt ml-2  clickImg" data-bs-toggle="modal" onClick={() => infos(vehiculo)} data-bs-target="#exampleModal" style={{ color: vehiculo.strColor }}></i></td>
+                                                            <td className="text-center"> {vehiculo.cajon.length > 0 ? vehiculo.cajon[0].nmbCajon : 'N/A'}  <i className="fas fa-car-alt ml-2  clickImg" data-bs-toggle="modal" onClick={() => infos(vehiculo)} data-bs-target="#exampleModal" style={{ color: vehiculo.strColor }}></i></td>
                                                             <td className="text-center">
                                                                 {vehiculo.strMarca}
                                                             </td>
