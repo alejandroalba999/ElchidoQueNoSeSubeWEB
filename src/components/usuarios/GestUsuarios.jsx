@@ -137,6 +137,12 @@ export const GestUsuarios = () => {
                                                 })
                                             }
                                         </tbody>
+                                        {
+                                            data.length < 1 &&
+                                            <div class="alert alert-primary text-center" role="alert">
+                                                No existe informacion para mostrar
+                                            </div>
+                                        }
                                     </table>
                                 </div>
                                 <span>Total de personas: <strong>{data.length}</strong> </span>

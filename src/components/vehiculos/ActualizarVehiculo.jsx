@@ -3,10 +3,13 @@ import PropTypes from 'prop-types'
 import axios from 'axios';
 import Swal from 'sweetalert2'
 
-export const ActualizarVehiculo = ({ setReload, id }) => {
+export const ActualizarVehiculo = ({ setReload, id, idCajon }) => {
     const [persona, setPersona] = useState([]);
+    const [cajon, setCajon] = useState([]);
     const [findPersonaId, setfindPersonaId] = useState({});
+    const [findCajonId, setfindCajonId] = useState({});
     const [authorization, setAuthorization] = useState(localStorage.getItem('authorization'));
+    console.log(idCajon, 'idCajon en Actualizar');
     const initialState = {
         _id: id,
         strMarca: '',
@@ -17,7 +20,7 @@ export const ActualizarVehiculo = ({ setReload, id }) => {
         strColor: '',
         idCajon: '',
         idPersona: '',
-        blnActivo: true
+        blnActivo: true,
     }
 
     const [newData, setNewData] = useState(initialState);
@@ -36,8 +39,21 @@ export const ActualizarVehiculo = ({ setReload, id }) => {
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {
-            console.log(newData);
-            await axios.put(`http://localhost:3000/api/vehiculo/`, newData)
+            console.log(newData, idCajon);
+            let valores = {
+                blnActivo: true,
+                idCajon: newData.idCajon,
+                idPersona: newData.idPersona,
+                nmbAño: newData.nmbAño,
+                strColor: newData.strColor,
+                strDescripcion: newData.strDescripcion,
+                strMarca: newData.strMarca,
+                strModelo: newData.strModelo,
+                strPlacas: newData.strPlacas,
+                _id: newData._id,
+                anteriorCajonId: idCajon
+            }
+            await axios.put(`http://localhost:3000/api/vehiculo/`, valores)
                 .then(res => {
                     setReload(reload => !reload);
                     Swal.fire({
@@ -50,6 +66,7 @@ export const ActualizarVehiculo = ({ setReload, id }) => {
 
                 })
         } catch (error) {
+            console.log(newData, idCajon, 'error');
             Swal.fire({
                 position: 'center',
                 icon: 'error',
@@ -65,11 +82,18 @@ export const ActualizarVehiculo = ({ setReload, id }) => {
             .then(res => {
                 const datos = res.data.cont.obtenerVehiculo[0];
                 const persona = datos.persona.length > 0 ? datos.persona[0] : [];
+                const cajon = datos.cajon.length > 0 ? datos.cajon[0] : [];
                 setNewData(datos);
-                setfindPersonaId(persona)
+                setfindPersonaId(persona);
+                setfindCajonId(cajon);
+                console.log(datos);
             }).catch((err) => {
                 console.log(err);
             })
+        await axios.get(`http://localhost:3000/api/cajon/${true}`).then(res => {
+            const data = res.data.cont.cajon;
+            setCajon(data);
+        })
         axios.get(`http://localhost:3000/api/persona/${true}`,)
             .then(res => {
                 const data = res.data.cont.persona
@@ -142,7 +166,7 @@ export const ActualizarVehiculo = ({ setReload, id }) => {
                         onChange={handleInputChange} />
                 </div>
                 <div className="form-group mb-3">
-                    <label htmlFor="strPlacas">Asignar persona</label>
+                    <label htmlFor="idPersona">Asignar persona</label>
                     <select class="form-select form-select-sm" required name="idPersona" onChange={handleInputChange} aria-label="Default select example" >
                         <option  >{findPersonaId.strNombre} {findPersonaId.strPrimerApellido ? findPersonaId.strPrimerApellido : ''} {findPersonaId.strSegundoApellido ? findPersonaId.strSegundoApellido : ''}</option>
                         {
@@ -153,6 +177,21 @@ export const ActualizarVehiculo = ({ setReload, id }) => {
                                 )
 
 
+                            })
+                        }
+                    </select>
+
+                </div>
+                <div className="form-group mb-3">
+                    <label htmlFor="idCajon">Asignar cajón</label>
+                    <select class="form-select form-select-sm" required name="idCajon" onChange={handleInputChange} aria-label="Default select example" >
+                        <option  >{findCajonId.nmbCajon}</option>
+                        {
+                            cajon.map(cajones => {
+
+                                return (
+                                    <option key={cajones._id} value={cajones._id} style={{ display: cajones._id == findCajonId._id ? 'none' : 'inline' }} >{cajones.nmbCajon} </option>
+                                )
                             })
                         }
                     </select>

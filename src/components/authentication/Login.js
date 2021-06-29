@@ -5,6 +5,7 @@ import { UserContext } from './UserContext';
 import axios from 'axios';
 import Swal from 'sweetalert2'
 import { useHistory } from 'react-router';
+import { Navigation } from '../authentication/navigation';
 
 export const Login = () => {
     const history = useHistory();
@@ -57,7 +58,7 @@ export const Login = () => {
 
         <div className="wrapper fadeInDown">
             <div id="formContent">
-
+                <Navigation />
                 <div className="fadeIn first">
                     <img src={caleo_logo} id="icon" alt="User Icon" />
                 </div>

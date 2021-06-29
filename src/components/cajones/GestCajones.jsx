@@ -180,12 +180,13 @@ export const GestCajones = () => {
                                                 })
                                             }
                                         </tbody>
-
-
-
-
                                     </table>
-
+                                    {
+                                        data.length < 1 &&
+                                        <div class="alert alert-primary text-center" role="alert">
+                                            No existe informacion para mostrar
+                                        </div>
+                                    }
                                 </div>
                                 <span>Total de cajones: <strong>{data.length}</strong> </span>
                             </div>

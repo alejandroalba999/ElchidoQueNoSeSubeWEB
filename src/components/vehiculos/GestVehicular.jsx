@@ -19,15 +19,17 @@ export const GestVehicular = () => {
 
     const [mostrarActualizar, setMostrarActualizar] = useState({
         mostrar: false,
-        id: ''
+        id: '',
+        idCajon: ''
     });
 
-    const { mostrar, id } = mostrarActualizar;
+    const { mostrar, id, idCajon } = mostrarActualizar;
 
-    const actualizar = (id) => {
+    const actualizar = (id, idCajon) => {
         setMostrarActualizar({
             mostrar: true,
             id: id,
+            idCajon: idCajon
         });
     }
 
@@ -93,6 +95,7 @@ export const GestVehicular = () => {
     }
 
     useEffect(() => {
+        setActivoInactivo([{ estado: 'Activo', blnActivo: true, pointer: true }, { estado: 'Inactivo', blnActivo: false, pointer: false }])
         setMostrarActualizar({
             mostrar: false
         })
@@ -119,7 +122,7 @@ export const GestVehicular = () => {
                     <div className="row">
                         <div className="col-md-4 col-lg-4 col-sm-12 mt-3">
                             {
-                                mostrar ? <ActualizarVehiculo id={id} setReload={setReload} reload={reload} />
+                                mostrar ? <ActualizarVehiculo id={id} idCajon={idCajon} setReload={setReload} reload={reload} />
                                     :
                                     <RegistroVehiculo setReload={setReload} />
                             }
@@ -168,14 +171,23 @@ export const GestVehicular = () => {
                                                             <td className="text-center">{(vehiculo.blnActivo === true) ? <p style={{ cursor: 'pointer' }} onClick={() => estatus(vehiculo._id, vehiculo.blnActivo, vehiculo.strMarca)}><i className="fa fa-check-circle fa-lg" style={{ color: 'green', cursor: 'pointer' }} ></i></p> : <p onClick={() => estatus(vehiculo._id, vehiculo.blnActivo, vehiculo.strMarca)}><i className="fa fa-times-circle fa-lg" style={{ color: 'red', cursor: 'pointer' }}></i></p>}</td>
                                                             <td className="text-center">
 
-                                                                <button disabled={mostrar} className="btn btn-primary btn-sm" onClick={() => actualizar(vehiculo._id, vehiculo)} > <i className="far fa-edit" ></i></button>
+                                                                <button disabled={mostrar} className="btn btn-primary btn-sm" onClick={() => actualizar(vehiculo._id, vehiculo.idCajon)} > <i className="far fa-edit" ></i></button>
                                                             </td>
                                                         </tr>
                                                     )
                                                 })
+
+
                                             }
                                         </tbody>
                                     </table>
+                                    {
+                                        data.length < 1 &&
+                                        <div class="alert alert-primary text-center" role="alert">
+                                            No existe informacion para mostrar
+                                        </div>
+                                    }
+
                                 </div>
 
                                 <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
