@@ -3,6 +3,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2'
 import { ActualizarPersonas } from './ActualizarPersonas'
 import { RegistroPersona } from './RegistroPersona'
+import { Enviroments } from '../../enviroments/enviroments.url';
 import './App.css'
 
 export const GestUsuarios = () => {
@@ -39,7 +40,7 @@ export const GestUsuarios = () => {
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`http://localhost:3000/api/persona/${_id}/${valor}`)
+                axios.delete(`${Enviroments.urlBack}/api/persona/${_id}/${valor}`)
                     .then(res => {
                         setReload(reload => !reload);
                         Swal.fire({
@@ -73,7 +74,7 @@ export const GestUsuarios = () => {
     }, [reload])
 
     useEffect(() => {
-        axios.get(`http://localhost:3000/api/persona`, { headers: { 'authorization': authorization } })
+        axios.get(`${Enviroments.urlBack}/api/persona`, { headers: { 'authorization': authorization } })
             .then(res => {
                 const datos = res.data.cont.persona;
                 setData(datos);
@@ -101,8 +102,8 @@ export const GestUsuarios = () => {
                                         <thead>
                                             <tr>
                                                 <th scope="col" className="text-center">Nombre Completo</th>
-                                                <th scope="col" className="text-center">Teléfono</th>
                                                 <th scope="col" className="text-center">Email</th>
+                                                <th className="text-center" scope="col">Rol</th>
                                                 <th className="text-center" scope="col">Activo</th>
                                                 <th className="text-center" scope="col">Acciones</th>
                                             </tr>
@@ -116,20 +117,17 @@ export const GestUsuarios = () => {
                                                             <td className='text-left'>
                                                                 <div className="row " >
                                                                     <div className="col-6 text-center">
-                                                                        <img src={`http://localhost:3000/api/imagen?ruta=personas&img=${persona.strImg}`} className="img" alt="Logo" />
+                                                                        <img src={`${Enviroments.urlBack}/api/imagen?ruta=personas&img=${persona.strImg}`} className="img" alt="Logo" />
                                                                     </div>
                                                                     <div className="col-6 p-0 m-0">
                                                                         {persona.strNombre} {persona.strPrimerApellido} {persona.strSegundoApellido}
                                                                     </div>
                                                                 </div>
-
-
                                                             </td>
-                                                            <td className="text-center">{persona.nmbTelefono}</td>
                                                             <td className="text-center">{persona.strCorreo}</td>
-                                                            <td className="text-center">{(persona.blnActivo === true) ? <p style={{ cursor: 'pointer' }} onClick={() => estatus(persona._id, persona.blnActivo)}><i className="fa fa-check-circle fa-lg" style={{ color: 'green', cursor: 'pointer' }} ></i></p> : <p onClick={() => estatus(persona._id, persona.blnActivo)}><i className="fa fa-times-circle fa-lg" style={{ color: 'red', cursor: 'pointer' }}></i></p>}</td>
+                                                            <td className="text-center"><span className={persona.blnAdmin == false ? "badge rounded-pill bg-dark" : 'badge rounded-pill bg-danger'}>{persona.blnAdmin == true ? 'Admin' : 'Usuario'}</span></td>
+                                                            <td className="text-center">{(persona.blnActivo === true) ? <p style={{ cursor: 'pointer' }} onClick={() => estatus(persona._id, persona.blnActivo, persona.strNombre, persona.strPrimerApellido)}><i className="fa fa-check-circle fa-lg" style={{ color: 'green', cursor: 'pointer' }} ></i></p> : <p onClick={() => estatus(persona._id, persona.blnActivo, persona.strNombre, persona.strPrimerApellido)}><i className="fa fa-times-circle fa-lg" style={{ color: 'red', cursor: 'pointer' }}></i></p>}</td>
                                                             <td className="text-center">
-
                                                                 <button disabled={mostrar} className="btn btn-primary btn-sm" onClick={() => actualizar(persona._id, persona)} > <i className="far fa-edit" ></i></button>
                                                             </td>
                                                         </tr>

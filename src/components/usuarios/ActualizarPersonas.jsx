@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios';
 import Swal from 'sweetalert2'
+import { Enviroments } from '../../enviroments/enviroments.url';
 
 export const ActualizarPersonas = ({ setReload, id }) => {
 
@@ -14,6 +15,7 @@ export const ActualizarPersonas = ({ setReload, id }) => {
         strDireccion: '',
         strContrasena: '',
         nmbTelefono: '',
+        blnAdmin: false,
         blnActivo: true
     }
 
@@ -24,17 +26,27 @@ export const ActualizarPersonas = ({ setReload, id }) => {
     }
 
     const handleInputChange = ({ target }) => {
+
         setNewData({
             ...newData,
             [target.name]: target.value
         });
+
+    }
+
+    const checkbox = (boolean) => {
+
+        setNewData({
+            ...newData,
+            blnAdmin: boolean
+        });
+
     }
 
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {
-            console.log(newData);
-            await axios.put(`http://localhost:3000/api/persona/`, newData)
+            await axios.put(`${Enviroments.urlBack}/api/persona/`, newData)
                 .then(res => {
                     setReload(reload => !reload);
                     Swal.fire({
@@ -58,7 +70,7 @@ export const ActualizarPersonas = ({ setReload, id }) => {
     }
 
     useEffect(async () => {
-        await axios.get(`http://localhost:3000/api/persona/obtenerId/${id}`)
+        await axios.get(`${Enviroments.urlBack}/api/persona/obtenerId/${id}`)
             .then(res => {
                 // console.log(res.data.cont.cajon[0]);
                 const datos = res.data.cont.persona[0];
@@ -101,12 +113,6 @@ export const ActualizarPersonas = ({ setReload, id }) => {
                         value={newData.strSegundoApellido}
                         onChange={handleInputChange} required />
                 </div>
-                {/* <div className="form-group mb-3">
-                    <label htmlFor="strCorreo">Correo Electrónico</label>
-                    <input type="email" className="form-control form-control-sm" id="strCorreo" placeholder="Correo electrónico" name="strCorreo"
-                        value={newData.strCorreo}
-                        onChange={handleInputChange} required />
-                </div> */}
                 <div className="form-group mb-3">
                     <label htmlFor="nmbTelefono">Teléfono</label>
                     <input type="number" className="form-control form-control-sm" id="nmbTelefono" placeholder="Teléfono" name="nmbTelefono"
@@ -119,15 +125,24 @@ export const ActualizarPersonas = ({ setReload, id }) => {
                         value={newData.strDireccion}
                         onChange={handleInputChange} required />
                 </div>
-                {/* <div className="form-group mb-3">
-                    <label htmlFor="strContrasena">Contraseña</label>
-                    <input type="password" className="form-control form-control-sm" id="strContrasena" placeholder="Contraseña" name="strContrasena"
-                        value={newData.strContrasena}
-                        onChange={handleInputChange} required />
-                </div> */}
+                <div className="form-group mb-3">
+                    <div class="form-check">
+                        <input onClick={() => checkbox(false)} class="form-check-input" type="radio" name="blnAdmin" id="blnAdmin1" checked={newData.blnAdmin == false} />
+                        <label className="form-check-label" htmlFor="flexRadioDefault1">
+                            Usuario por defecto
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input onClick={() => checkbox(true)} class="form-check-input" type="radio" name="blnAdmin" id="blnAdmin2" checked={newData.blnAdmin == true} />
+                        <label className="form-check-label" htmlFor="flexRadioDefault2">
+                            Administrador
+                        </label>
+                    </div>
+                </div>
+                <hr />
                 <div className=" form-group row text-right" >
                     <div className="col-12 text-center">
-                        <button className="btn btn-primary m-1" type="submit">Actualizar</button>
+                        <button className="btn btn-primary m-1 " type="submit">Actualizar</button>
                     </div>
                 </div>
             </form >

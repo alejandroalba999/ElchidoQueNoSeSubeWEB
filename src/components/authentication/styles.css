@@ -38,6 +38,16 @@ margin-top: 200px;
   min-height: 100%;
   padding: 20px;
 }
+.wrapper2 {
+margin-top: 20px;
+  display: flex;
+  align-items: center;
+  flex-direction: column; 
+  justify-content: center;
+  width: 100%;
+  min-height: 100%;
+  padding: 20px;
+}
 
 #formContent {
   -webkit-border-radius: 10px 10px 10px 10px;
@@ -119,6 +129,8 @@ input[type=text]:placeholder {
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }
+
+
 
 @-webkit-keyframes fadeInDown {
   0% {

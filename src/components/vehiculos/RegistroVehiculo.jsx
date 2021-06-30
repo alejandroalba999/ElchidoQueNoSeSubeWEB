@@ -3,6 +3,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2'
 import './App.css'
 import { useHistory } from 'react-router';
+import { Enviroments } from '../../enviroments/enviroments.url';
 
 
 export const RegistroVehiculo = ({ setReload }) => {
@@ -33,7 +34,7 @@ export const RegistroVehiculo = ({ setReload }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post(`http://localhost:3000/api/vehiculo`, data)
+            await axios.post(`${Enviroments.urlBack}/api/vehiculo`, data)
                 .then(res => {
                     setReload(reload => !reload);
                     setData(initialState);
@@ -64,7 +65,7 @@ export const RegistroVehiculo = ({ setReload }) => {
 
     useEffect(() => {
         try {
-            axios.get(`http://localhost:3000/api/cajon/${true}`,).then((res) => {
+            axios.get(`${Enviroments.urlBack}/api/cajon/${true}`,).then((res) => {
                 const data = res.data.cont.cajon;
                 if (data.length < 1) {
                     Swal.fire({
@@ -86,7 +87,7 @@ export const RegistroVehiculo = ({ setReload }) => {
             }).catch((error) => {
                 console.log(error);
             })
-            axios.get(`http://localhost:3000/api/persona/${true}`,)
+            axios.get(`${Enviroments.urlBack}/api/persona/${true}`,)
                 .then(res => {
                     const data = res.data.cont.persona
                     setPersona(data)
@@ -190,7 +191,7 @@ export const RegistroVehiculo = ({ setReload }) => {
 
                 }
 
-
+                <hr />
                 <div className=" form-group row text-right" >
                     <div className="col-12 text-center">
                         <button className="btn btn-danger m-1 " type="button" onClick={() => reset()}>Cancelar</button>

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios';
 import Swal from 'sweetalert2'
+import { Enviroments } from '../../enviroments/enviroments.url';
+
 
 export const ActualizarVehiculo = ({ setReload, id, idCajon }) => {
     const [persona, setPersona] = useState([]);
@@ -53,7 +55,7 @@ export const ActualizarVehiculo = ({ setReload, id, idCajon }) => {
                 _id: newData._id,
                 anteriorCajonId: idCajon
             }
-            await axios.put(`http://localhost:3000/api/vehiculo/`, valores)
+            await axios.put(`${Enviroments.urlBack}/api/vehiculo/`, valores)
                 .then(res => {
                     setReload(reload => !reload);
                     Swal.fire({
@@ -78,7 +80,7 @@ export const ActualizarVehiculo = ({ setReload, id, idCajon }) => {
     }
 
     useEffect(async () => {
-        await axios.get(`http://localhost:3000/api/vehiculo/obtenerId/${id}`)
+        await axios.get(`${Enviroments.urlBack}/api/vehiculo/obtenerId/${id}`)
             .then(res => {
                 const datos = res.data.cont.obtenerVehiculo[0];
                 const persona = datos.persona.length > 0 ? datos.persona[0] : [];
@@ -90,11 +92,11 @@ export const ActualizarVehiculo = ({ setReload, id, idCajon }) => {
             }).catch((err) => {
                 console.log(err);
             })
-        await axios.get(`http://localhost:3000/api/cajon/${true}`).then(res => {
+        await axios.get(`${Enviroments.urlBack}/api/cajon/${true}`).then(res => {
             const data = res.data.cont.cajon;
             setCajon(data);
         })
-        axios.get(`http://localhost:3000/api/persona/${true}`,)
+        axios.get(`${Enviroments.urlBack}/api/persona/${true}`,)
             .then(res => {
                 const data = res.data.cont.persona
                 setPersona(data)
@@ -195,8 +197,8 @@ export const ActualizarVehiculo = ({ setReload, id, idCajon }) => {
                             })
                         }
                     </select>
-
                 </div>
+                <hr />
                 <div className=" form-group row text-right" >
                     <div className="col-12 text-center">
                         <button className="btn btn-primary m-1" type="submit">Actualizar</button>

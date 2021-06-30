@@ -85,7 +85,7 @@ export const ActualizarCajon = ({ setReload, id, reload }) => {
                         value={newData ? newData.strDescripcion : ''}
                         onChange={handleInputChange} required />
                 </div>
-
+                <hr />
                 <div className=" form-group row text-right" >
                     <div className="col-12 text-center">
                         <button className="btn btn-primary m-1" type="submit">Actualizar</button>

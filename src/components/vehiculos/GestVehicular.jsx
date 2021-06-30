@@ -3,6 +3,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2'
 import { ActualizarVehiculo } from './ActualizarVehiculo';
 import { RegistroVehiculo } from './RegistroVehiculo';
+import { Enviroments } from '../../enviroments/enviroments.url';
 // import './App.css'
 
 export const GestVehicular = () => {
@@ -46,7 +47,7 @@ export const GestVehicular = () => {
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`http://localhost:3000/api/vehiculo/${_id}/${valor}`)
+                axios.delete(`${Enviroments.urlBack}/api/vehiculo/${_id}/${valor}`)
                     .then(res => {
                         setReload(reload => !reload);
                         setActivoInactivo([{ estado: 'Activo', blnActivo: true, pointer: true }, { estado: 'Inactivo', blnActivo: false, pointer: false }])
@@ -76,7 +77,7 @@ export const GestVehicular = () => {
         setInfo(object)
     }
     const estado = (blnActivo) => {
-        axios.get(`http://localhost:3000/api/vehiculo`, { params: { blnActivo: blnActivo } }, { headers: { 'authorization': authorization } })
+        axios.get(`${Enviroments.urlBack}/api/vehiculo`, { params: { blnActivo: blnActivo } }, { headers: { 'authorization': authorization } })
             .then(res => {
                 if (blnActivo == true) {
                     setActivoInactivo([{ estado: 'Activo', blnActivo: true, pointer: true }, { estado: 'Inactivo', blnActivo: false, pointer: false }])
@@ -102,7 +103,7 @@ export const GestVehicular = () => {
     }, [reload])
 
     useEffect(() => {
-        axios.get(`http://localhost:3000/api/vehiculo`, { params: { blnActivo: true } }, { headers: { 'authorization': authorization } })
+        axios.get(`${Enviroments.urlBack}/api/vehiculo`, { params: { blnActivo: true } }, { headers: { 'authorization': authorization } })
             .then(res => {
                 const datos = res.data.cont.getVehiculos;
                 setData(datos);

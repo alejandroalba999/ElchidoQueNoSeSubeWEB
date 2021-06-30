@@ -54,6 +54,7 @@ export const RegistroCajon = ({ setReload }) => {
                         value={strDescripcion}
                         onChange={handleInputChange} maxLength="100" required />
                 </div>
+                <hr />
                 <div className=" form-group row text-right" >
                     <div className="col-12 text-center">
                         <button className="btn btn-danger m-1 " type="button" onClick={() => reset()}>Cancelar</button>

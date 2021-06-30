@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 import Swal from 'sweetalert2'
+import { Enviroments } from '../../enviroments/enviroments.url';
 
 export const RegistroPersona = ({ setReload }) => {
 
@@ -27,7 +28,7 @@ export const RegistroPersona = ({ setReload }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post(`http://localhost:3000/api/persona/`, data)
+            await axios.post(`${Enviroments.urlBack}/api/persona/`, data)
                 .then(res => {
                     setReload(reload => !reload);
                     setData(initialState);
@@ -104,6 +105,7 @@ export const RegistroPersona = ({ setReload }) => {
                         value={data.strDireccion}
                         onChange={handleInputChange} required />
                 </div>
+                <hr />
                 <div className=" form-group row text-right" >
                     <div className="col-12 text-center">
                         <button className="btn btn-danger m-1 " type="button" onClick={() => reset()}>Cancelar</button>
