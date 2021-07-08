@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Redirect, Route } from "react-router-dom";
 import { Navbar } from "../components/shared/Navbar"
 import { Footer } from "../components/shared/Footer.jsx";

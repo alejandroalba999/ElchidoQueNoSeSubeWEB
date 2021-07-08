@@ -14,6 +14,8 @@ import ProtectedRoute from './ProtectedRoute';
 import { Perfil } from '../components/account/Perfil';
 
 
+
+
 export const AppRouter = () => {
 
     return (
@@ -31,7 +33,7 @@ export const AppRouter = () => {
 
                     <ProtectedRoute exact path='/gestionVehicular' component={GestVehicular} role={null} />
 
-
+                    <ProtectedRoute exact path='/image' component={Image} role={null} />
 
                     <ProtectedRoute exact path='/gestionUsuarios' component={GestUsuarios} role={true} />
 

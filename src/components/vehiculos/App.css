@@ -3,3 +3,9 @@
   transform: scale(1.5);
   cursor: pointer;
 }
+.colorEye:hover{
+  color:blue
+}
+
+.tableFixHead{ overflow: auto; height: 450px; }
+

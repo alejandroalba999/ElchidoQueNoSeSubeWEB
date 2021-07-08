@@ -173,7 +173,7 @@ export const GestCajones = () => {
                                                                 </label>
                                                             </td>
                                                             <td className="text-center" style={{ cursor: 'pointer', color: cajon.blnActivo == true ? 'green' : 'red' }} onClick={() => estatus(cajon._id, cajon.blnActivo)} >{cajon.blnActivo === true ? <i class="fas fa-check-circle"></i> : <i class="fas fa-times-circle"></i>}</td>
-                                                            <td className="text-center"><button disabled={mostrar} className="btn btn-primary btn-sm" onClick={() => actualizar(cajon._id, cajon)} > <i className="fa fa-edit" ></i></button></td>
+                                                            <td className="text-center"><button disabled={mostrar} className="btn btn-outline-primary  p-1 btn-sm" onClick={() => actualizar(cajon._id, cajon)} > <i className="far fa-edit" ></i></button></td>
                                                         </tr>
                                                     )
 

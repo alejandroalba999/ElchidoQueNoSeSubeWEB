@@ -7,6 +7,7 @@ import { Enviroments } from '../../enviroments/enviroments.url';
 
 
 export const RegistroVehiculo = ({ setReload }) => {
+
     const history = useHistory();
     const initialState = {
         strMarca: '',
@@ -19,7 +20,6 @@ export const RegistroVehiculo = ({ setReload }) => {
         idPersona: 0,
         blnActivo: true
     }
-
     const [data, setData] = useState(initialState);
     const [persona, setPersona] = useState([]);
     const [cajon, setCajon] = useState([]);
@@ -31,11 +31,13 @@ export const RegistroVehiculo = ({ setReload }) => {
         });
     }
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             await axios.post(`${Enviroments.urlBack}/api/vehiculo`, data)
                 .then(res => {
+
                     setReload(reload => !reload);
                     setData(initialState);
                     setCargar(false)
@@ -61,6 +63,7 @@ export const RegistroVehiculo = ({ setReload }) => {
         }
 
     }
+
 
 
     useEffect(() => {
@@ -190,7 +193,6 @@ export const RegistroVehiculo = ({ setReload }) => {
                     </div>
 
                 }
-
                 <hr />
                 <div className=" form-group row text-right" >
                     <div className="col-12 text-center">

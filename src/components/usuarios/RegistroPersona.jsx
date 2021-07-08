@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import axios from 'axios';
 import Swal from 'sweetalert2'
 import { Enviroments } from '../../enviroments/enviroments.url';
+import { useHistory } from 'react-router';
+
 
 export const RegistroPersona = ({ setReload }) => {
-
+    const history = useHistory();
     const initialState = {
         strNombre: '',
         strPrimerApellido: '',
@@ -39,7 +41,9 @@ export const RegistroPersona = ({ setReload }) => {
                         showConfirmButton: false,
                         timer: 1500
                     })
-
+                    if (window.location.href == 'http://localhost:3001/auth/register') {
+                        history.push('/auth/login');
+                    }
                 })
         } catch (error) {
             setReload(reload => !reload);

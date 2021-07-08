@@ -4,9 +4,14 @@ import Swal from 'sweetalert2'
 import { ActualizarVehiculo } from './ActualizarVehiculo';
 import { RegistroVehiculo } from './RegistroVehiculo';
 import { Enviroments } from '../../enviroments/enviroments.url';
+import ImageUploading from 'react-images-uploading';
 // import './App.css'
 
 export const GestVehicular = () => {
+    const [images, setImages] = React.useState([]);
+    const [blnFotos, setBlnFotos] = useState(false);
+
+    const [imgVehic, setImgVehic] = useState([]);
 
     const [reload, setReload] = useState(false)
 
@@ -23,6 +28,8 @@ export const GestVehicular = () => {
         id: '',
         idCajon: ''
     });
+    const maxNumber = 69;
+
 
     const { mostrar, id, idCajon } = mostrarActualizar;
 
@@ -74,6 +81,7 @@ export const GestVehicular = () => {
 
     }
     const infos = (object) => {
+        verFotos()
         setInfo(object)
     }
     const estado = (blnActivo) => {
@@ -94,6 +102,66 @@ export const GestVehicular = () => {
                 })
             })
     }
+
+    const verFotos = async (estado) => {
+        setBlnFotos(estado);
+        axios.get(`${Enviroments.urlBack}/api/vehiculo/obtenerId/${info._id}`).then(res => {
+            setImgVehic(res.data.cont.obtenerVehiculo[0].strImg)
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
+    const uploadFotos = async () => {
+        const idVehiculo = info._id
+        for (let img = 0; img < images.length; img++) {
+            const formD = new FormData;
+            formD.append('archivo', images[img].file, images[img].file.name);
+
+            await axios.put(`${Enviroments.urlBack}/api/carga/?ruta=vehiculos&id=${idVehiculo}`, formD).then(res => {
+                if (img == images.length - 1) {
+                    Swal.fire({
+                        icon: 'success',
+                        text: 'Las imagenes fueron agregadas exitosamente'
+                    })
+                    setImages([]);
+                    setBlnFotos(false)
+
+                }
+            }).catch(err => {
+                console.log(err);
+            });
+
+        }
+    }
+    const eliminarFoto = async (strNombre) => {
+        Swal.fire({
+            text: `¿Estas seguro de eliminar la imagen seleccionada?`,
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: `Eliminar`,
+            reverseButtons: true
+        }).then(async (res) => {
+            if (res.isConfirmed) {
+                await axios.delete(`${Enviroments.urlBack}/api/carga/eliminar/?ruta=vehiculos&id=${info._id}&strNombre=${strNombre}`).then(res => {
+
+                    Swal.fire({
+                        icon: 'success',
+                        text: 'La imagen se elimino correctamente'
+                    })
+                    verFotos(true);
+                }).catch(err => {
+                    console.log(err);
+                });
+            }
+        })
+
+    }
+    const onChange = (imageList, addUpdateIndex) => {
+        setImages(imageList);
+    };
 
     useEffect(() => {
         setActivoInactivo([{ estado: 'Activo', blnActivo: true, pointer: true }, { estado: 'Inactivo', blnActivo: false, pointer: false }])
@@ -140,7 +208,6 @@ export const GestVehicular = () => {
                                             })
                                         }
 
-                                        {/* <span class="badge bg-light text-dark bg-sm" style={{ cursor: 'pointer' }}>Inactivos</span> */}
                                     </label>
                                 </div>
                                 <hr />
@@ -172,7 +239,7 @@ export const GestVehicular = () => {
                                                             <td className="text-center">{(vehiculo.blnActivo === true) ? <p style={{ cursor: 'pointer' }} onClick={() => estatus(vehiculo._id, vehiculo.blnActivo, vehiculo.strMarca)}><i className="fa fa-check-circle fa-lg" style={{ color: 'green', cursor: 'pointer' }} ></i></p> : <p onClick={() => estatus(vehiculo._id, vehiculo.blnActivo, vehiculo.strMarca)}><i className="fa fa-times-circle fa-lg" style={{ color: 'red', cursor: 'pointer' }}></i></p>}</td>
                                                             <td className="text-center">
 
-                                                                <button disabled={mostrar} className="btn btn-primary btn-sm" onClick={() => actualizar(vehiculo._id, vehiculo.idCajon)} > <i className="far fa-edit" ></i></button>
+                                                                <button disabled={mostrar} className="btn btn-outline-primary  p-1 btn-sm" onClick={() => actualizar(vehiculo._id, vehiculo.idCajon)} > <i className="far fa-edit" ></i></button>
                                                             </td>
                                                         </tr>
                                                     )
@@ -199,35 +266,142 @@ export const GestVehicular = () => {
                                                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div className="modal-body">
-                                                <div className="row ">
-                                                    <div className="col-4 " style={{ borderRight: '1px solid' }}>
-                                                        <h5 className="mb-3">Vehiculo</h5>
+                                                {
+                                                    !blnFotos &&
+                                                    <div className="row ">
+                                                        <div className="col-4 " style={{ borderRight: '1px solid' }}>
+                                                            <h5 className="mb-3">Vehiculo</h5>
+                                                            <hr />
+                                                            <p><strong>Marca:</strong>{info.strMarca}</p>
+                                                            <p><strong>Modelo:</strong>{info.strModelo}</p>
+                                                            <p><strong>Año:</strong>{info.nmbAño}</p>
+                                                            <p><strong>Placas:</strong>{info.strPlacas}</p>
+                                                        </div>
+                                                        <div className="col-4" style={{ borderRight: '1px solid' }}>
+                                                            <h5 className="mb-3">Cajón</h5>
+                                                            <hr />
+                                                            <p><strong>Numero de Cajón:</strong>{info.cajon.length > 0 ? info.cajon[0].nmbCajon : 'N/A'}</p>
+                                                            <p><strong>Descripción:</strong>{info.cajon.length > 0 ? info.cajon[0].strDescripcion : 'N/A'}</p>
+                                                        </div>
+                                                        <div className="col-4">
+                                                            <h5 className="mb-3">Propietario</h5>
+                                                            <hr />
+                                                            <p><strong>Nombre:</strong>{info.persona.length > 0 ? info.persona[0].strNombre + ' ' + info.persona[0].strPrimerApellido : 'N/A'}</p>
+                                                            <p><strong>Correo:</strong>{info.persona.length > 0 ? info.persona[0].strCorreo : 'N/A'}</p>
+                                                            <p><strong>Telefono:</strong>{info.persona.length > 0 ? info.persona[0].nmbTelefono : 'N/A'}</p>
+                                                            <p><strong>Dirección:</strong>{info.persona.length > 0 ? info.persona[0].strDireccion : 'N/A'}</p>
+                                                        </div>
                                                         <hr />
-                                                        <p><strong>Marca:</strong>{info.strMarca}</p>
-                                                        <p><strong>Modelo:</strong>{info.strModelo}</p>
-                                                        <p><strong>Año:</strong>{info.nmbAño}</p>
-                                                        <p><strong>Placas:</strong>{info.strPlacas}</p>
                                                     </div>
-                                                    <div className="col-4" style={{ borderRight: '1px solid' }}>
-                                                        <h5 className="mb-3">Cajón</h5>
-                                                        <hr />
-                                                        <p><strong>Numero de Cajón:</strong>{info.cajon.length > 0 ? info.cajon[0].nmbCajon : 'N/A'}</p>
-                                                        <p><strong>Descripción:</strong>{info.cajon.length > 0 ? info.cajon[0].strDescripcion : 'N/A'}</p>
-                                                    </div>
-                                                    <div className="col-4">
-                                                        <h5 className="mb-3">Propietario</h5>
-                                                        <hr />
-                                                        <p><strong>Nombre:</strong>{info.persona.length > 0 ? info.persona[0].strNombre + ' ' + info.persona[0].strPrimerApellido : 'N/A'}</p>
-                                                        <p><strong>Correo:</strong>{info.persona.length > 0 ? info.persona[0].strCorreo : 'N/A'}</p>
-                                                        <p><strong>Telefono:</strong>{info.persona.length > 0 ? info.persona[0].nmbTelefono : 'N/A'}</p>
-                                                        <p><strong>Dirección:</strong>{info.persona.length > 0 ? info.persona[0].strDireccion : 'N/A'}</p>
-                                                    </div>
-                                                </div>
 
+                                                }
+
+                                                {
+                                                    blnFotos ?
+                                                        <div className="row">
+                                                            <div className="col-md-11 col-sm-10 col-xs-10">
+                                                                <h6> <strong>{info.strMarca} <i class="fas fa-chevron-right"></i> {info.strModelo} <i class="fas fa-chevron-right"></i></strong> {info.nmbAño}</h6>
+                                                            </div>
+                                                            <div className="col-md-1 col-sm-2 col-xs-2">
+
+                                                                <button type="button" className="btn btn-outline-secondary btn-sm" onClick={() => verFotos(false)} ><i class="fas fa-chevron-down"></i></button>
+                                                            </div>
+                                                        </div> :
+                                                        <div className="text-center">
+                                                            <button type="button" class="btn btn-outline-secondary bt-sm" onClick={() => verFotos(true)}>Ver Fotos</button>
+                                                        </div>
+                                                }
+
+                                                {
+                                                    blnFotos && images.length < 1 &&
+
+                                                    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                                                        <hr />
+                                                        <div class="carousel-inner tableFixHead">
+                                                            {
+                                                                imgVehic.length < 1 ?
+                                                                    <div class="alert alert-primary text-center" role="alert">
+                                                                        No existen imagenes disponibles
+                                                                    </div> :
+
+                                                                    imgVehic.map(img => {
+                                                                        return (
+                                                                            <div >
+                                                                                <button type="button" onClick={() => eliminarFoto(img)} class="btn btn-outline-danger btn-sm m-3"><i class="fas fa-trash-alt p-1"></i>Eliminar</button>
+                                                                                <img class="d-block w-100 p-3" src={`${Enviroments.urlBack}/api/imagen?ruta=vehiculos&img=${img}`} alt="First slide" />
+                                                                                <hr />
+                                                                            </div>
+                                                                        )
+                                                                    })
+                                                            }
+
+                                                        </div>
+
+                                                    </div>
+                                                }
+                                                {
+                                                    blnFotos &&
+                                                    <div>
+                                                        <ImageUploading
+                                                            multiple
+                                                            value={images}
+                                                            onChange={onChange}
+                                                            maxNumber={maxNumber}
+                                                            dataURLKey="data_url"
+                                                        >
+                                                            {({
+                                                                imageList,
+                                                                onImageUpload,
+                                                                onImageRemoveAll,
+                                                                onImageRemove,
+                                                                onImageUpdate
+
+                                                            }) => (
+                                                                <div className="text-center" >
+                                                                    {
+                                                                        images.length < 1 ? <button className="btn btn-outline-success btn-sm mt-3 " onClick={onImageUpload}>
+                                                                            Subir Imagenes <i class="fas fa-upload m-2"></i>
+                                                                        </button> :
+                                                                            <div>
+                                                                                <button className="btn btn-outline-secondary btn-sm" onClick={onImageRemoveAll}>Remover Imagenes</button>
+                                                                                <button className="btn btn-outline-success btn-sm m-2" onClick={onImageUpload}>+</button>
+                                                                            </div>
+
+
+                                                                    }
+
+
+                                                                    <hr />
+                                                                    <div class="row">
+                                                                        {imageList.map((image, index) => (
+                                                                            <div class="col-sm-6">
+                                                                                <div class="card">
+                                                                                    <div class="card-body">
+                                                                                        <h6 class="card-title">{image.file.name}</h6>
+                                                                                        <p class="card-text">
+                                                                                            <div class="card-body">
+                                                                                                <p class="card-text"> <img src={image['data_url']} alt="" className="w-100" /></p>
+                                                                                                <button class="btn btn-outline-warning btn-sm m-2" onClick={() => onImageUpdate(index)}><i class="fas fa-pen"></i></button>
+                                                                                                <button class="btn btn-outline-danger btn-sm" onClick={() => onImageRemove(index)}><i class="fas fa-trash-alt"></i></button>
+                                                                                            </div>
+                                                                                        </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        ))}
+
+                                                                    </div>
+
+                                                                </div>
+                                                            )}
+                                                        </ImageUploading>
+                                                    </div>
+                                                }
 
 
                                             </div>
                                             <div className="modal-footer">
+                                                {images.length > 0 && blnFotos && <button type="button" className="btn btn-success" onClick={() => uploadFotos()} >Guardar</button>}
                                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                             </div>
                                         </div>

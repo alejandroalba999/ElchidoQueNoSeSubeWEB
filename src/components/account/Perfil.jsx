@@ -5,7 +5,9 @@ import { useHistory } from 'react-router';
 import './style.css';
 import axios from 'axios';
 import { Enviroments } from '../../enviroments/enviroments.url';
-
+import FormData from 'form-data';
+import ImageUploading from 'react-images-uploading';
+import noImage from '../../assets/images/no-image.png';
 export const Perfil = () => {
     let decoded = localStorage.getItem('authorization');
     if (localStorage.getItem("authorization")) {
@@ -13,7 +15,63 @@ export const Perfil = () => {
     } else {
         history.push('/');
     }
-    console.log(decoded.usuario);
+
+
+    const [images, setImages] = React.useState([{ data_url: `${Enviroments.urlBack}/api/imagen?ruta=personas&img=${decoded.usuario.strImg}` ? `${Enviroments.urlBack}/api/imagen?ruta=personas&img=${decoded.usuario.strImg}` : noImage }]);
+    const maxNumber = 69;
+    const onChange = (imageList, addUpdateIndex) => {
+        // Swal.fire({
+        //     title: 'Sí deseas cambiar la imagen deberas inicar sesión nuevamente',
+        //     text: `¿Estas seguro?`,
+        //     icon: 'warning',
+        //     showCancelButton: true,
+        //     cancelButtonText: 'Cancelar',
+        //     confirmButtonColor: '#3085d6',
+        //     cancelButtonColor: '#d33',
+        //     cancelButtonText: 'Cancelar',
+        //     confirmButtonText: `Confirmar`,
+        //     reverseButtons: true
+        console.log(imageList);
+        Swal.fire({
+            title: 'Sí deseas cambiar la imagen deberas inicar sesión nuevamente',
+            text: '¿Estas seguro?',
+            imageUrl: imageList[0].data_url,
+            imageWidth: 400,
+            imageHeight: 200,
+            imageAlt: 'Custom image',
+            showCancelButton: true,
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: `Confirmar`,
+            reverseButtons: true
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const formD = new FormData;
+                formD.append('archivo', imageList[0].file, imageList[0].file.name);
+                await axios.put(`${Enviroments.urlBack}/api/carga/?ruta=personas&id=${decoded.usuario._id}`, formD).then(res => {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        text: res.data.msg,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    setImages(imageList);
+                    history.push('/auth/login');
+                }).catch(err => {
+                    console.log(err);
+                })
+
+            } else if (result.isDismissed) {
+                setImages([{ data_url: `${Enviroments.urlBack}/api/imagen?ruta=personas&img=${decoded.usuario.strImg}` ? `${Enviroments.urlBack}/api/imagen?ruta=personas&img=${decoded.usuario.strImg}` : noImage }])
+            }
+        })
+
+    };
+
+
     const [data, setData] = useState(decoded.usuario);
     const [actualizar, setActualizar] = useState(false)
     const [reload, setReload] = useState(false);
@@ -111,7 +169,6 @@ export const Perfil = () => {
 
 
 
-
     return (
         <div className="row">
             <div className="col-md-4 col-sm-12 col-lg-4">
@@ -121,7 +178,36 @@ export const Perfil = () => {
                             <div className="card-body">
                                 <h3 className="mb-3">Perfil</h3>
                                 <div className="text-center mb-5">
-                                    <img src={`${Enviroments.urlBack}/api/imagen?ruta=personas&img=${decoded.usuario.strImg}`} style={{ maxWidth: '220px', width: '400px', borderRadius: '20%' }} className="img-fluid" alt="..." />
+                                    <ImageUploading
+                                        multiple
+                                        value={images}
+                                        onChange={onChange}
+                                        maxNumber={maxNumber}
+                                        dataURLKey="data_url"
+                                    >
+                                        {({
+                                            imageList,
+                                            onImageUpload,
+                                            onImageRemoveAll,
+                                            onImageUpdate,
+                                            onImageRemove,
+                                            isDragging,
+                                            dragProps,
+                                        }) => (
+                                            <div>
+                                                {imageList.map((image, index) => (
+                                                    <div key={index} className="image-item">
+                                                        <img id="output" src={image['data_url']} style={{ maxWidth: '220px', width: '400px', borderRadius: '20%' }} className="img-fluid" alt="..." />
+                                                        <div className="image-item__btn-wrapper">
+                                                            <span class="badge bg-light text-dark fotoChange m-2" onClick={() => onImageUpdate(index)} style={{ cursor: 'pointer', border: 'solid 1px' }}>Cargar</span>
+                                                        </div>
+                                                    </div>
+                                                ))}
+
+                                            </div>
+                                        )}
+                                    </ImageUploading>
+
                                 </div>
 
                                 <div className="card mb-5" >
