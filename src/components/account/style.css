@@ -3,7 +3,6 @@ input[type=text]:disabled {
 }
 .fotoChange:hover{
  padding: 1.8%;
- position: absolute;
 }
 
 #upload-photo {
@@ -11,3 +10,9 @@ input[type=text]:disabled {
    position: absolute;
    z-index: -1;
 }
+
+.changeImg:hover{  
+ color: #0d6efd
+
+}
+

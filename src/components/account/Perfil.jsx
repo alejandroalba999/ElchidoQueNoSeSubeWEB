@@ -20,54 +20,52 @@ export const Perfil = () => {
     const [images, setImages] = React.useState([{ data_url: `${Enviroments.urlBack}/api/imagen?ruta=personas&img=${decoded.usuario.strImg}` ? `${Enviroments.urlBack}/api/imagen?ruta=personas&img=${decoded.usuario.strImg}` : noImage }]);
     const maxNumber = 69;
     const onChange = (imageList, addUpdateIndex) => {
-        // Swal.fire({
-        //     title: 'Sí deseas cambiar la imagen deberas inicar sesión nuevamente',
-        //     text: `¿Estas seguro?`,
-        //     icon: 'warning',
-        //     showCancelButton: true,
-        //     cancelButtonText: 'Cancelar',
-        //     confirmButtonColor: '#3085d6',
-        //     cancelButtonColor: '#d33',
-        //     cancelButtonText: 'Cancelar',
-        //     confirmButtonText: `Confirmar`,
-        //     reverseButtons: true
-        console.log(imageList);
-        Swal.fire({
-            title: 'Sí deseas cambiar la imagen deberas inicar sesión nuevamente',
-            text: '¿Estas seguro?',
-            imageUrl: imageList[0].data_url,
-            imageWidth: 400,
-            imageHeight: 200,
-            imageAlt: 'Custom image',
-            showCancelButton: true,
-            cancelButtonText: 'Cancelar',
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            cancelButtonText: 'Cancelar',
-            confirmButtonText: `Confirmar`,
-            reverseButtons: true
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                const formD = new FormData;
-                formD.append('archivo', imageList[0].file, imageList[0].file.name);
-                await axios.put(`${Enviroments.urlBack}/api/carga/?ruta=personas&id=${decoded.usuario._id}`, formD).then(res => {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        text: res.data.msg,
-                        showConfirmButton: false,
-                        timer: 1500
+        if (imageList[0].file.type == 'image/jpeg' || imageList[0].file.type == 'image/png' || imageList[0].file.type == 'image/jpg') {
+            Swal.fire({
+                title: 'Sí deseas cambiar la imagen deberas inicar sesión nuevamente',
+                text: '¿Estas seguro?',
+                imageUrl: imageList[0].data_url,
+                imageWidth: 400,
+                imageHeight: 200,
+                imageAlt: 'Custom image',
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: `Confirmar`,
+                reverseButtons: true
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const formD = new FormData;
+                    formD.append('archivo', imageList[0].file, imageList[0].file.name);
+                    await axios.put(`${Enviroments.urlBack}/api/carga/?ruta=personas&id=${decoded.usuario._id}`, formD).then(res => {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            text: res.data.msg,
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        setImages(imageList);
+                        history.push('/auth/login');
+                    }).catch(err => {
+                        console.log(err);
                     })
-                    setImages(imageList);
-                    history.push('/auth/login');
-                }).catch(err => {
-                    console.log(err);
-                })
 
-            } else if (result.isDismissed) {
-                setImages([{ data_url: `${Enviroments.urlBack}/api/imagen?ruta=personas&img=${decoded.usuario.strImg}` ? `${Enviroments.urlBack}/api/imagen?ruta=personas&img=${decoded.usuario.strImg}` : noImage }])
-            }
-        })
+                } else if (result.isDismissed) {
+                    setImages([{ data_url: `${Enviroments.urlBack}/api/imagen?ruta=personas&img=${decoded.usuario.strImg}` ? `${Enviroments.urlBack}/api/imagen?ruta=personas&img=${decoded.usuario.strImg}` : noImage }])
+                }
+            })
+        } else {
+            Swal.fire({
+                icon: 'error',
+                text: 'El tipo de imagen no es admitido',
+                timer: 1500
+            })
+        }
+
+
 
     };
 
@@ -86,14 +84,17 @@ export const Perfil = () => {
 
 
     const arrayTemas = [
-        { color: '#0d6efd', obscuro: true },
+        { color: '#e66465', obscuro: true },
         { color: '#198754', obscuro: true },
+        { color: '#808080', obscuro: true },
+        { color: '#212529', obscuro: true },
         { color: '#00CED1', obscuro: false },
         { color: '#ADD8E6', obscuro: false },
-        { color: '#212529', obscuro: true },
-        { color: '#ffc107', obscuro: false },
-        { color: '#808080', obscuro: true },
-        { color: '#ffff', obscuro: false }]
+        { color: '#dc3545', obscuro: false },
+        { color: '#ffff', obscuro: false },
+        { color: 'linear-gradient(0.20turn, #ebf8e1, #728860)', obscuro: false },
+        { color: 'linear-gradient(115deg, rgba(179,152,171,1) 10%, rgba(136,96,125,1) 41%)', obscuro: false }
+    ]
 
     const history = useHistory();
     const cambiarColor = (color, obscuro) => {
@@ -197,11 +198,11 @@ export const Perfil = () => {
                                             <div>
                                                 {imageList.map((image, index) => (
                                                     <div key={index} className="image-item">
-                                                        <img id="output" src={image['data_url']} style={{ maxWidth: '220px', width: '400px', borderRadius: '20%' }} className="img-fluid" alt="..." />
-                                                        <div className="image-item__btn-wrapper">
-                                                            <span class="badge bg-light text-dark fotoChange m-2" onClick={() => onImageUpdate(index)} style={{ cursor: 'pointer', border: 'solid 1px' }}>Cargar</span>
-                                                        </div>
+                                                        <img id="output" src={image['data_url']} style={{ maxWidth: '80%', width: '80%', borderRadius: '20%' }} className="img-fluid" alt="..." />
+                                                        <p></p>
+                                                        <i class="fas fa-chevron-circle-up changeImg fa-lg" style={{ cursor: 'pointer' }} onClick={() => onImageUpdate(index)} data-bs-toggle="tooltip" data-bs-placement="end" title="Cambiar Imagen"></i>
                                                     </div>
+
                                                 ))}
 
                                             </div>
