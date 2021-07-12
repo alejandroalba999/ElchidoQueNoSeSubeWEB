@@ -89,13 +89,15 @@ export const RegistroPersona = ({ setReload }) => {
                     <label htmlFor="strCorreo">Correo Electrónico</label>
                     <input type="email" className="form-control form-control-sm" id="strCorreo" placeholder="Correo electrónico" name="strCorreo"
                         value={data.strCorreo}
-                        onChange={handleInputChange} required />
+                        onChange={handleInputChange} required pattern="[^@\s]+@[^@\s]+\.[^@\s]+" />
+                    <div class="invalid-feedback">Formato de correo no reconocido</div>
                 </div>
                 <div className="form-group mb-3">
                     <label htmlFor="strContrasena">Contraseña</label>
                     <input type="password" className="form-control form-control-sm" id="strContrasena" placeholder="Contraseña" name="strContrasena"
                         value={data.strContrasena}
-                        onChange={handleInputChange} required />
+                        onChange={handleInputChange} required pattern=".{0}|.{8,}" />
+                    <div class="invalid-feedback">La longitud de la contraseña debe ser mayor a 7</div>
                 </div>
                 <div className="form-group mb-3">
                     <label htmlFor="nmbTelefono">Teléfono</label>

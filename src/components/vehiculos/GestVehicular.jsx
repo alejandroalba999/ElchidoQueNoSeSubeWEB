@@ -104,8 +104,9 @@ export const GestVehicular = () => {
     }
 
     const verFotos = async (estado) => {
+        setImgVehic([])
         setBlnFotos(estado);
-        axios.get(`${Enviroments.urlBack}/api/vehiculo/obtenerId/${info._id}`).then(res => {
+        await axios.get(`${Enviroments.urlBack}/api/vehiculo/obtenerId/${info._id}`).then(res => {
             setImgVehic(res.data.cont.obtenerVehiculo[0].strImg)
         }).catch((err) => {
             console.log(err);

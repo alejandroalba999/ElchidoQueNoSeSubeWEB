@@ -38,7 +38,7 @@ export const Navbar = ({ setReload, reload }) => {
                             decoded.usuario.blnAdmin === true ?
                                 <ul className="navbar-nav">
                                     <li className="nav-item m-1 active">
-                                        <Link className="nav-link active" aria-current="page" to='/dashboard'> <i className="fa fa-home m-1"></i> Inicio</Link>
+                                        <Link className="nav-link active" aria-current="page" to='/rentar/undefined'> <i class="fas fa-dollar-sign"></i> Pagos</Link>
                                     </li>
                                     <li className="nav-item m-1">
                                         <Link className="nav-link" to='/gestionVehicular' > <i className="fa fa-car m-1"></i>Gestión Vehicular</Link>
@@ -59,7 +59,7 @@ export const Navbar = ({ setReload, reload }) => {
                                 :
                                 <ul className="navbar-nav">
                                     <li className="nav-item m-1 active">
-                                        <Link className="nav-link active" aria-current="page" to='/dashboard'> <i className="fa fa-home m-1"></i> Inicio</Link>
+                                        <Link className="nav-link active" aria-current="page" to='/dashboard'> <i class="fas fa-dollar-sign"></i> Pagos</Link>
                                     </li>
                                     <li className="nav-item m-1">
                                         <Link className="nav-link" to='/gestionVehicular' > <i className="fa fa-car m-1"></i>Gestión Vehicular</Link>
@@ -84,7 +84,7 @@ export const Navbar = ({ setReload, reload }) => {
                 <div className="container-fluid navbar-collapse collapse " >
                     <Link className="navbar-brand" to='/dashboard'><button className={colorLetras == 'true' ? 'btn btn-outline-warning btn-sm' : 'btn btn-outline-dark btn-sm'}>CALEO</button></Link>
 
-                    <input style={{ background: color, color: colorLetras == 'true' ? 'white' : 'black' }} type="text" class="form-control form-control-sm w-50" placeholder="Buscar persona..." aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" />
+                    <input style={{ background: color, color: colorLetras == 'true' ? 'white' : 'black', border: colorLetras == 'false' ? '1px solid black' : '1px solid white' }} type="text" class="form-control form-control-sm w-50" placeholder="Buscar persona..." aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" />
 
                     <ul className="navbar-nav">
                         {
@@ -92,7 +92,7 @@ export const Navbar = ({ setReload, reload }) => {
                                 <form className="d-flex">
 
                                     <li className="nav-item m-1 active">
-                                        <Link className="nav-link active" aria-current="page" to='/dashboard'> <i className="fa fa-home m-1"></i> Inicio</Link>
+                                        <Link className="nav-link active" aria-current="page" to='/rentar/undefined'><i class="fas fa-dollar-sign"></i> Pagos</Link>
                                     </li>
                                     <li className="nav-item m-1">
                                         <Link className="nav-link active" to='/gestionVehicular' > <i className="fa fa-car m-1"></i>Gestión Vehicular</Link>
@@ -111,13 +111,13 @@ export const Navbar = ({ setReload, reload }) => {
                                             <ul className={colorLetras == 'true' ? 'dropdown-menu dropdown-menu-dark p-2' : 'dropdown-menu dropdown-menu-light p-2'} style={{ border: 'solid 1px grey' }} >
                                                 <li className="nav-item m-1" style={{ border: 'solid 1px grey' }} >
                                                     <Link to='/account/perfil' >
-                                                        <button type="button" className={colorLetras == 'true' ? 'btn btn-outline-light btn-sm m-2' : 'btn btn-outline-dark btn-sm m-2'}>Perfil Usuario</button>
+                                                        <button type="button" className={colorLetras == 'true' ? 'btn btn-outline-light btn-sm m-2' : 'btn btn-outline-dark btn-sm m-2'}>Perfil Usuario <i class="far fa-user"></i></button>
                                                     </Link>
                                                 </li>
 
                                                 <li className="nav-item m-1" style={{ border: 'solid 1px grey' }}>
                                                     <Link className="nav-link logOut" to="" onClick={() => (history.push(`/auth/login`), localStorage.removeItem('authorization'))} >
-                                                        <button type="button" className={colorLetras == 'true' ? 'btn btn-outline-light btn-sm ' : 'btn btn-outline-dark btn-sm '}>Cerrar Sesión</button>
+                                                        <button type="button" className={colorLetras == 'true' ? 'btn btn-outline-light btn-sm ' : 'btn btn-outline-dark btn-sm '}>Cerrar Sesión<i class="fas fa-sign-out-alt"></i></button>
                                                     </Link>
                                                 </li>
                                             </ul>
@@ -130,7 +130,7 @@ export const Navbar = ({ setReload, reload }) => {
                                 <form className="d-flex">
 
                                     <li className="nav-item m-1 active">
-                                        <Link className="nav-link active" aria-current="page" to='/dashboard'> <i className="fa fa-home m-1"></i> Inicio</Link>
+                                        <Link className="nav-link active" aria-current="page" to='/rentar/undefined'> <i className="fa fa-home m-1"></i> Inicio</Link>
                                     </li>
                                     <li className="nav-item m-1">
                                         <Link className="nav-link active" to='/gestionVehicular' > <i className="fa fa-car m-1"></i>Gestión Vehicular</Link>
@@ -144,13 +144,13 @@ export const Navbar = ({ setReload, reload }) => {
                                             <ul className={colorLetras == 'true' ? 'dropdown-menu dropdown-menu-dark p-2' : 'dropdown-menu dropdown-menu-light p-2'} style={{ border: 'solid 1px grey' }} >
                                                 <li className="nav-item m-1" style={{ border: 'solid 1px grey' }} >
                                                     <Link to='/account/perfil' >
-                                                        <button type="button" className={colorLetras == 'true' ? 'btn btn-outline-light btn-sm m-2' : 'btn btn-outline-dark btn-sm m-2'}>Perfil Usuario</button>
+                                                        <button type="button" className={colorLetras == 'true' ? 'btn btn-outline-light btn-sm m-2' : 'btn btn-outline-dark btn-sm m-2'}>Perfil Usuario <i class="far fa-user"></i></button>
                                                     </Link>
                                                 </li>
 
                                                 <li className="nav-item m-1" style={{ border: 'solid 1px grey' }}>
                                                     <Link className="nav-link logOut" to="" onClick={() => (history.push(`/auth/login`), localStorage.removeItem('authorization'))} >
-                                                        <button type="button" className={colorLetras == 'true' ? 'btn btn-outline-light btn-sm ' : 'btn btn-outline-dark btn-sm '}>Cerrar Sesión</button>
+                                                        <button type="button" className={colorLetras == 'true' ? 'btn btn-outline-light btn-sm ' : 'btn btn-outline-dark btn-sm '}>Cerrar Sesión<i class="fas fa-sign-out-alt"></i></button>
                                                     </Link>
                                                 </li>
                                             </ul>

@@ -9,6 +9,7 @@ import FormData from 'form-data';
 import ImageUploading from 'react-images-uploading';
 import noImage from '../../assets/images/no-image.png';
 export const Perfil = () => {
+    const history = useHistory();
     let decoded = localStorage.getItem('authorization');
     if (localStorage.getItem("authorization")) {
         decoded = jwt_decode(localStorage.getItem("authorization"));
@@ -85,18 +86,22 @@ export const Perfil = () => {
 
     const arrayTemas = [
         { color: '#e66465', obscuro: true },
-        { color: '#198754', obscuro: true },
+        { color: '#3EB489', obscuro: true },
         { color: '#808080', obscuro: true },
         { color: '#212529', obscuro: true },
-        { color: '#00CED1', obscuro: false },
+        { color: '#008080', obscuro: true },
         { color: '#ADD8E6', obscuro: false },
-        { color: '#dc3545', obscuro: false },
+        { color: '#dc3545', obscuro: true },
         { color: '#ffff', obscuro: false },
-        { color: 'linear-gradient(0.20turn, #ebf8e1, #728860)', obscuro: false },
-        { color: 'linear-gradient(115deg, rgba(179,152,171,1) 10%, rgba(136,96,125,1) 41%)', obscuro: false }
+    ]
+    const arrayTemasDegradado = [
+        { color: 'linear-gradient(90deg, #FC466B 0%, #3F5EFB 100%)', obscuro: true },
+        { color: 'linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%)', obscuro: false },
+        { color: 'linear-gradient(90deg, #9ebd13 0%, #008552 100%)', obscuro: false },
+        { color: 'radial-gradient(circle, rgba(34,193,195,1) 0%, rgba(253,187,45,0.29735644257703087) 100%)', obscuro: false },
     ]
 
-    const history = useHistory();
+
     const cambiarColor = (color, obscuro) => {
         Swal.fire({
             title: 'Sí deseas cambiar el tema deberas inicar sesión nuevamente',
@@ -231,13 +236,28 @@ export const Perfil = () => {
                                 <h3>Información General</h3>
                                 <hr />
                                 <h5>Cambiar Tema</h5>
-                                {
-                                    arrayTemas.map((colores) => {
-                                        return (
-                                            <span key={colores.color} onClick={() => cambiarColor(colores.color, colores.obscuro)} className="badge m-1" style={{ background: colores.color, cursor: 'pointer', color: colores.obscuro == false ? 'black' : 'white', border: 'solid 0.1px' }}><i className="fas fa-tint"></i></span>
-                                        )
-                                    })
-                                }
+                                <li className="list-group-item">Colores solidos
+                                    <p>
+                                        {
+                                            arrayTemas.map((colores, index) => {
+                                                return (
+                                                    <span key={colores.color} onClick={() => cambiarColor(colores.color, colores.obscuro)} className="badge m-1" style={{ background: colores.color, cursor: 'pointer', color: colores.obscuro == false ? 'black' : 'white', border: 'solid 0.1px black' }}><i className="fas fa-tint"></i></span>
+                                                )
+                                            })
+                                        }
+                                    </p>
+                                </li>
+                                <li className="list-group-item">Colores con degradado
+                                    <p>
+                                        {
+                                            arrayTemasDegradado.map((colores, index) => {
+                                                return (
+                                                    <span key={colores.color} onClick={() => cambiarColor(colores.color, colores.obscuro)} className="badge m-1" style={{ background: colores.color, cursor: 'pointer', color: colores.obscuro == false ? 'black' : 'white', border: 'solid 0.1px black' }}><i className="fas fa-tint"></i></span>
+                                                )
+                                            })
+                                        }
+                                    </p>
+                                </li>
                             </div>
                         </div>
                     </div>
