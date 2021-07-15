@@ -84,7 +84,7 @@ export const Navbar = ({ setReload, reload }) => {
                 <div className="container-fluid navbar-collapse collapse " >
                     <Link className="navbar-brand" to='/dashboard'><button className={colorLetras == 'true' ? 'btn btn-outline-warning btn-sm' : 'btn btn-outline-dark btn-sm'}>CALEO</button></Link>
 
-                    <input style={{ background: color, color: colorLetras == 'true' ? 'white' : 'black', border: colorLetras == 'false' ? '1px solid black' : '1px solid white' }} type="text" class="form-control form-control-sm w-50" placeholder="Buscar persona..." aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" />
+
 
                     <ul className="navbar-nav">
                         {

@@ -9,6 +9,7 @@ export const GestControlPago = () => {
 
     const [reload, setReload] = useState(false)
     const [data, setData] = useState([]);
+    const [gananciaTotal, setGananciaTotal] = useState(0)
     const [mostrarActualizar, setMostrarActualizar] = useState({
         mostrar: false,
         id: ''
@@ -69,7 +70,11 @@ export const GestControlPago = () => {
         await axios.get(`${Enviroments.urlBack}/api/controlPago`)
             .then(res => {
                 const datos = res.data.cont.controlPago;
-                console.log(datos);
+                let sum = [];
+                for (const coche of datos) {
+                    sum.push({ sum: coche.cantidad })
+                }
+                setGananciaTotal(sum.reduce((a, v) => a = a + v.sum, 0));
                 setData(datos);
             }).catch((err) => {
                 console.log(err);
@@ -112,7 +117,9 @@ export const GestControlPago = () => {
                                                 <th scope="col">Vehiculo</th>
                                                 <th scope="col" >Cajon</th>
                                                 <th scope="col">Persona</th>
-                                                <th scope="col" >Cantidad de pagos</th>
+                                                <th scope="col" >Total de pagos</th>
+                                                <th scope="col">Pagos realizados</th>
+                                                <th scope="col">Ver Pagos</th>
                                             </tr>
                                         </thead>
 
@@ -120,15 +127,15 @@ export const GestControlPago = () => {
 
                                         <tbody  >
                                             {
-                                                data.map(coche => {
-
+                                                data.map((coche, index) => {
                                                     return (
-
-                                                        <tr key={coche._id} className="text-center overTable" style={{ cursor: 'pointer' }}>
+                                                        <tr key={index} className="text-center">
                                                             <td>{coche._id.vehiculo ? coche._id.vehiculo[0].strMarca : ''}-{coche._id.vehiculo ? coche._id.vehiculo[0].strModelo : ''}</td>
                                                             <td >{coche._id.cajon ? coche._id.cajon[0].nmbCajon : ''}</td>
                                                             <td>{coche._id.persona ? coche._id.persona[0].strNombre : ''} {coche._id.persona ? coche._id.persona[0].strPrimerApellido : ''}</td>
-                                                            <td >{coche.cantidad}</td>
+                                                            <td ><strong>$</strong>{coche.cantidad}.00</td>
+                                                            <td>{coche.nmbPagosRealizados}</td>
+                                                            <td><button className="btn btn-outline-primary btn-sm"><i className="far fa-eye"></i></button></td>
                                                         </tr>
                                                     )
 
@@ -138,12 +145,19 @@ export const GestControlPago = () => {
                                     </table>
                                     {
                                         data.length < 1 &&
-                                        <div class="alert alert-primary text-center" role="alert">
+                                        <div className="alert alert-primary text-center" role="alert">
                                             No existe informacion para mostrar
                                         </div>
                                     }
                                 </div>
-                                <span>Total de cajones: <strong>{data.length}</strong> </span>
+                                <div className="row">
+                                    <div className="col-md-6 text-center">
+                                        <span>Total de coches: <strong>{data.length}</strong> </span>
+                                    </div>
+                                    <div className="col-md-6 text-center">
+                                        <span>Ganancia Total: <strong>${gananciaTotal}</strong></span>
+                                    </div>
+                                </div>
                             </div>
 
 

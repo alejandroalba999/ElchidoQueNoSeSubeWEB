@@ -25,6 +25,4 @@ thead {background: white; top:10%}
 ::-webkit-scrollbar-thumb:hover {
   background: #555; 
 }
-.overTable:hover{ 
- text-decoration: underline;
-}
+

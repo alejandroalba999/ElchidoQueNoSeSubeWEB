@@ -24,6 +24,7 @@ export const RegistroVehiculo = ({ setReload }) => {
     const [persona, setPersona] = useState([]);
     const [cajon, setCajon] = useState([]);
     const [cargar, setCargar] = useState(true)
+
     const handleInputChange = ({ target }) => {
         setData({
             ...data,
@@ -37,11 +38,9 @@ export const RegistroVehiculo = ({ setReload }) => {
         try {
             await axios.post(`${Enviroments.urlBack}/api/vehiculo`, data)
                 .then(res => {
-
+                    setCargar(false)
                     setReload(reload => !reload);
                     setData(initialState);
-                    setCargar(false)
-                    setCargar(true)
                     Swal.fire({
                         position: 'top-end',
                         icon: 'success',
@@ -51,6 +50,7 @@ export const RegistroVehiculo = ({ setReload }) => {
                     })
 
                 })
+            setCargar(true)
         } catch (error) {
             setReload(reload => !reload);
             Swal.fire({
