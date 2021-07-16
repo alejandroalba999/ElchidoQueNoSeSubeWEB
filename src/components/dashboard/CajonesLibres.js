@@ -19,7 +19,7 @@ export const CajonesLibres = () => {
                     {(data.length <= 0) ? <div className="alert alert-primary" role="alert">
                         No hay cajones para mostrar :(</div> : null}
 
-                    <div className="row ">
+                    <div className="row tableFixHead">
 
                         {
                             data.map(cajon => {
@@ -27,7 +27,7 @@ export const CajonesLibres = () => {
 
                                     < div className=" col-md-4 col-sm-12 col-xs-12  mb-3 " key={cajon._id}>
                                         <div className="card shadow ">
-                                            <div className="card-header">
+                                            <div className="card-header ">
 
                                                 {
                                                     (cajon.blnActivo === false) ? <h5 style={{ color: 'red' }}>No disponible</h5>
@@ -37,7 +37,7 @@ export const CajonesLibres = () => {
                                                 }
 
                                             </div>
-                                            <div className="card-body " >
+                                            <div className="card-body "  >
                                                 <h5 className="card-title">Número de cajon: <strong>{cajon.nmbCajon}</strong> </h5>
                                                 <p className="card-text">{cajon.strDescripcion}</p>
 
