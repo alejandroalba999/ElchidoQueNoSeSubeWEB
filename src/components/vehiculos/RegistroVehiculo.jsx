@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import Swal from 'sweetalert2'
 import './App.css'
-import { useHistory } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import { Enviroments } from '../../enviroments/enviroments.url';
 
 
 export const RegistroVehiculo = ({ setReload }) => {
-
+    const { _id } = useParams();
     const history = useHistory();
     const initialState = {
         strMarca: '',
@@ -16,7 +16,7 @@ export const RegistroVehiculo = ({ setReload }) => {
         strDescripcion: '',
         strPlacas: '',
         strColor: '#000000',
-        idCajon: 0,
+        idCajon: _id == "undefined" ? '' : _id,
         idPersona: 0,
         blnActivo: true
     }
@@ -24,7 +24,7 @@ export const RegistroVehiculo = ({ setReload }) => {
     const [persona, setPersona] = useState([]);
     const [cajon, setCajon] = useState([]);
     const [cargar, setCargar] = useState(true)
-
+    const [nombreCajon, setNombreCajon] = useState()
     const handleInputChange = ({ target }) => {
         setData({
             ...data,
@@ -53,10 +53,11 @@ export const RegistroVehiculo = ({ setReload }) => {
             setCargar(true)
         } catch (error) {
             setReload(reload => !reload);
+            console.log(error);
             Swal.fire({
                 position: 'center',
                 icon: 'error',
-                text: error.response.data.msg,
+                text: error.response ? error.response.data.msg : error,
                 showConfirmButton: false,
                 timer: 1500
             })
@@ -70,6 +71,11 @@ export const RegistroVehiculo = ({ setReload }) => {
         try {
             axios.get(`${Enviroments.urlBack}/api/cajon/${true}`,).then((res) => {
                 const data = res.data.cont.cajon;
+                for (const iterator of res.data.cont.cajon) {
+                    if (iterator._id == _id) {
+                        setNombreCajon(iterator.nmbCajon)
+                    }
+                }
                 if (data.length < 1) {
                     Swal.fire({
                         title: 'No existen cajones disponibles por el momento',
@@ -98,7 +104,7 @@ export const RegistroVehiculo = ({ setReload }) => {
         } catch (error) {
             console.log(error);
         }
-    }, [cargar])
+    }, [cargar, _id])
 
     const reset = () => {
         setData(initialState);
@@ -177,21 +183,29 @@ export const RegistroVehiculo = ({ setReload }) => {
                     </div>
                 }
                 {
-                    cargar &&
-                    <div className="form-group mb-3" >
-                        <label htmlFor="strPlacas">Asignar cajón</label>
-                        <select class="form-select form-select-sm" required name="idCajon" onChange={handleInputChange} aria-label="Default select example" >
-                            <option value={''} defaultValue={'Seleccione cajón...'} >Seleccione cajón ...</option>
-                            {
-                                cajon.map(cajones => {
-                                    return (
-                                        <option key={cajones._id} value={cajones._id} >{cajones.nmbCajon} </option>
-                                    )
-                                })
-                            }
-                        </select>
-                    </div>
-
+                    cargar && (_id == '' || _id == 'undefined') ?
+                        <div className="form-group mb-3" >
+                            <label htmlFor="strPlacas">Asignar cajón </label>
+                            <select class="form-select form-select-sm" required name="idCajon" onChange={handleInputChange} aria-label="Default select example" >
+                                <option value={''}>{'Seleccione cajón ...'}</option>
+                                {
+                                    cajon.map(cajones => {
+                                        return (
+                                            <option key={cajones._id} value={cajones._id} style={{ display: _id == cajones._id ? 'none' : 'inline' }}>{cajones.nmbCajon} </option>
+                                        )
+                                    })
+                                }
+                            </select>
+                        </div>
+                        :
+                        <div className="form-group mb-3">
+                            <label htmlFor="strColor">Cajón asignado</label>
+                            <input type="text" className="form-control form-control-sm" id="idCajon" placeholder="Color vehiculo" name="idCajon"
+                                value={data.idCajon}
+                                onChange={handleInputChange} disabled style={{ display: 'none' }} />
+                            <input type="text" className="form-control form-control-sm text-center"
+                                value={nombreCajon} disabled />
+                        </div>
                 }
                 <hr />
                 <div className=" form-group row text-right" >

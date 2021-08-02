@@ -3,7 +3,7 @@ import { useHistory } from 'react-router';
 export const Navigation = () => {
     const history = useHistory();
     let activoLogin = [true, false];
-    if (window.location.href == 'http://localhost:3001/auth/register') {
+    if (window.location.pathname == '/auth/register') {
         activoLogin = [false, true];
     } else {
         activoLogin = [true, false];

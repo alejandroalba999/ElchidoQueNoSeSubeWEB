@@ -41,7 +41,6 @@ export const ActualizarVehiculo = ({ setReload, id, idCajon }) => {
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {
-            console.log(newData, idCajon);
             let valores = {
                 blnActivo: true,
                 idCajon: newData.idCajon,
@@ -170,7 +169,7 @@ export const ActualizarVehiculo = ({ setReload, id, idCajon }) => {
                 <div className="form-group mb-3">
                     <label htmlFor="idPersona">Asignar persona</label>
                     <select class="form-select form-select-sm" required name="idPersona" onChange={handleInputChange} aria-label="Default select example" >
-                        <option  >{findPersonaId.strNombre} {findPersonaId.strPrimerApellido ? findPersonaId.strPrimerApellido : ''} {findPersonaId.strSegundoApellido ? findPersonaId.strSegundoApellido : ''}</option>
+                        <option value={findPersonaId._id} >{findPersonaId.strNombre} {findPersonaId.strPrimerApellido ? findPersonaId.strPrimerApellido : ''} {findPersonaId.strSegundoApellido ? findPersonaId.strSegundoApellido : ''}</option>
                         {
                             persona.map(personas => {
 
@@ -187,7 +186,7 @@ export const ActualizarVehiculo = ({ setReload, id, idCajon }) => {
                 <div className="form-group mb-3">
                     <label htmlFor="idCajon">Asignar cajón</label>
                     <select class="form-select form-select-sm" required name="idCajon" onChange={handleInputChange} aria-label="Default select example" >
-                        <option  >{findCajonId.nmbCajon}</option>
+                        <option value={findCajonId._id} >{findCajonId.nmbCajon}</option>
                         {
                             cajon.map(cajones => {
 

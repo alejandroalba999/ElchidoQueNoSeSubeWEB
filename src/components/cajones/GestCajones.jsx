@@ -5,6 +5,7 @@ import { useFetchCajones } from '../../hooks/useFetchCajones';
 import axios from 'axios';
 import Swal from 'sweetalert2'
 import './App.css'
+import { Enviroments } from '../../enviroments/enviroments.url';
 export const GestCajones = () => {
 
     const [reload, setReload] = useState(false)
@@ -36,7 +37,7 @@ export const GestCajones = () => {
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
-                    axios.delete(`http://localhost:3000/api/cajonVehiculo/${_id}`)
+                    axios.delete(`${Enviroments.urlBack}/api/cajonVehiculo/${_id}`)
                         .then(res => {
                             console.log(res);
                             setReload(reload => !reload);
@@ -79,7 +80,7 @@ export const GestCajones = () => {
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`http://localhost:3000/api/cajon/${_id}/${valor}`)
+                axios.delete(`${Enviroments.urlBack}/api/cajon/${_id}/${valor}`)
                     .then(res => {
                         setReload(reload => !reload);
                         Swal.fire({

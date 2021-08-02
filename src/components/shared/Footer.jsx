@@ -30,7 +30,7 @@ export const Footer = () => {
     }, [])
     return (
         <div>
-            <div class="card-footer text-muted" style={{ background: color }}>
+            <div class="text-muted footer-flex p-1" style={{ background: color }}>
                 <div class="footer-copyright text-center " style={{ color: colorLetras == 'true' ? 'white' : 'black' }}>
                     <div className="row">
                         <div className="col-md-4 col-sm-12" >

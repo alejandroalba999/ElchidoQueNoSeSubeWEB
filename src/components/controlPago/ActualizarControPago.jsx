@@ -1,105 +1,106 @@
-import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types';
-import axios from 'axios';
-import Swal from 'sweetalert2';
+import React, { useEffect, useState } from 'react';
 import { Enviroments } from '../../enviroments/enviroments.url';
+import Swal from 'sweetalert2'
+import axios from 'axios';
+import moment from 'moment';
+export const ActualizarControlPago = ({ setReload, id }) => {
+    const [ultimoPago, setUltimoPago] = useState();
 
-
-export const ActualizarControlPago = ({ setReload, id, reload }) => {
-
-    const [newData, setNewData] = useState()
-
-    const reset = () => {
-        setReload(reload => !reload);
-    }
-
+    const initialState = {
+        nmbCantidad: '',
+        dteFechaPagoFin: '',
+        dteFechaPagoInicio: '',
+        blnActivo: true
+    };
+    const [cargar, setCargar] = useState(true)
+    const [data, setData] = useState(initialState);
     const handleInputChange = ({ target }) => {
-        console.log(target.value);
-        setNewData({
-            ...newData,
+        setData({
+            ...data,
             [target.name]: target.value
         });
     }
+    const reset = () => {
+        setData(initialState);
+        setReload(reload => !reload);
+    }
 
-    const update = async (e) => {
+    useEffect(() => {
+
+    }, [ultimoPago])
+
+
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            await axios.put(`${Enviroments.urlBack}/api/cajon/`, newData)
-                .then(res => {
-                    setReload(reload => !reload);
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        text: res.data.msg,
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-
-                })
-        } catch (error) {
-            console.log(error.response.data.msg);
+        await axios.post(`${Enviroments.urlBack}/api/controlPago`, data).then(res => {
+            setCargar(false);
             Swal.fire({
-                position: 'center',
-                icon: 'error',
-                text: error.response.data.msg,
+                position: 'top-end',
+                title: 'Información registrada exitosamente',
+                icon: 'success',
                 showConfirmButton: false,
                 timer: 1500
             })
-        }
+            setCargar(true)
+            setReload(reload => !reload);
+            setData(initialState);
+        }).catch(err => {
+            console.log(err.response.data.msg);
+            Swal.fire({
+                title: 'Error al registrar el pago',
+                text: err.response.data.msg,
+                icon: 'error',
+                showConfirmButton: true,
+            })
+        })
     }
 
     useEffect(async () => {
-        await axios.get(`${Enviroments.urlBack}/api/cajon/obtenerId/${id}`)
-            .then(res => {
-                // console.log(res.data.cont.cajon[0]);
-                const datos = res.data.cont.cajon[0];
-                setNewData(datos);
-
-            }).catch((err) => {
-                console.log(err);
-            })
-
+        await axios.get(`${Enviroments.urlBack}/api/controlPago/obtenerId/${id}`).then(res => {
+            console.log(res.data.cont.controlPago[0]);
+            setData({
+                ...data,
+                ['nmbCantidad']: res.data.cont.controlPago[0].nmbCantidad,
+                ['dteFechaPagoFin']: moment(res.data.cont.controlPago[0].dteFechaPagoFin).add(1, 'days').format('YYYY-MM-DD'),
+                ['dteFechaPagoInicio']: moment(res.data.cont.controlPago[0].dteFechaPagoInicio).add(1, 'days').format('YYYY-MM-DD')
+            });
+        }).catch(err => {
+            console.log(err);
+        })
     }, [])
-
-
     return (
-        <div className="container" className="was-validated">
-            <div className="row">
-                <div className="col-11 col-lg-11">
-                    <h5 className="card-title">Actualizar Pagos</h5>
-                </div>
-                <div className="col-1 col-lg-1" style={{ cursor: 'pointer', color: 'red' }}>
-                    <i className="far fa-times-circle" onClick={() => reset()}></i>
-                </div>
-            </div>
-
+        <div className="container">
+            <h5 className="card-title">Actualizar Pago</h5>
             <hr />
-            <form onSubmit={update} >
+            <form onSubmit={handleSubmit} className="was-validated">
+
                 <div className="form-group mb-3">
-                    <label htmlFor="number">Número del cajón</label>
-                    <input type="number" className="form-control form-control-sm" id="number" placeholder="Número del cajón" name="nmbCajon"
-                        value={newData ? newData.nmbCajon : ''}
+                    <label htmlFor="dteFechaPagoInicio">Fecha inicio del pago:</label>
+                    <input type="date" className="form-control form-control-sm" id="dteFechaPagoInicio" name="dteFechaPagoInicio"
+                        value={data.dteFechaPagoInicio}
                         onChange={handleInputChange} required />
                 </div>
                 <div className="form-group mb-3">
-                    <label htmlFor="description">Descripción del Cajón</label>
-                    <input type="text" className="form-control form-control-sm" id="description" placeholder="Descripción del Cajón" name="strDescripcion"
-                        value={newData ? newData.strDescripcion : ''}
+                    <label htmlFor="dteFechaPagoFin">Fecha fin del pago:</label>
+                    <input type="date" className="form-control form-control-sm" id="dteFechaPagoFin" name="dteFechaPagoFin"
+                        value={data.dteFechaPagoFin}
+                        onChange={handleInputChange} min={moment(data.dteFechaPagoInicio).add(1, 'days').format('YYYY-MM-DD')} disabled={data.dteFechaPagoInicio == ''} required />
+                </div>
+                <div className="form-group mb-3">
+                    <label htmlFor="nmbCantidad">Precio a pagar:</label>
+                    <input type="number" className="form-control form-control-sm" id="nmbCantidad" placeholder="Cantidad a pagar" name="nmbCantidad"
+                        value={data.nmbCantidad}
                         onChange={handleInputChange} required />
                 </div>
                 <hr />
                 <div className=" form-group row text-right" >
                     <div className="col-12 text-center">
+                        <button className="btn btn-danger m-1 " type="button" onClick={() => reset()}>Cancelar</button>
                         <button className="btn btn-primary m-1" type="submit">Actualizar</button>
                     </div>
                 </div>
-            </form>
-        </div>
+            </form >
+        </div >
     )
 }
-
-ActualizarControlPago.propTypes = {
-    setReload: PropTypes.func.isRequired,
-    id: PropTypes.string.isRequired,
-    reload: PropTypes.bool.isRequired
-};

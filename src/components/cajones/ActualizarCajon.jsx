@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import Swal from 'sweetalert2'
+import { Enviroments } from '../../enviroments/enviroments.url';
 
 export const ActualizarCajon = ({ setReload, id, reload }) => {
 
@@ -22,7 +23,7 @@ export const ActualizarCajon = ({ setReload, id, reload }) => {
     const update = async (e) => {
         e.preventDefault();
         try {
-            await axios.put(`http://localhost:3000/api/cajon/`, newData)
+            await axios.put(`${Enviroments.urlBack}/api/cajon/`, newData)
                 .then(res => {
                     setReload(reload => !reload);
                     Swal.fire({
@@ -47,7 +48,7 @@ export const ActualizarCajon = ({ setReload, id, reload }) => {
     }
 
     useEffect(async () => {
-        await axios.get(`http://localhost:3000/api/cajon/obtenerId/${id}`)
+        await axios.get(`${Enviroments.urlBack}/api/cajon/obtenerId/${id}`)
             .then(res => {
                 // console.log(res.data.cont.cajon[0]);
                 const datos = res.data.cont.cajon[0];

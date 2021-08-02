@@ -1,5 +1,44 @@
 body{
    background-image: url('./assets/images/27488.jpg');
 }
-.tableFixHead          {  height: 500px; overflow-y: scroll; overflow-x: hidden; padding:2%}
+.tableFixHead          {  height: 500px; overflow-y: scroll; overflow-x: scroll; padding:0%}
 
+.container-buttom{
+   padding-top: 5%;
+   padding-bottom: 5%;
+}
+
+.footer-flex {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: red;
+  color: white;
+  text-align: center;
+}
+.tableFixHead thead  { position:sticky; top: 0; z-index: 1; }
+
+/* Just common table stuff. Really. */
+table  { border-collapse: collapse; width: 100%; }
+th     { background:#eee; }
+thead {background: white; top:5%}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}

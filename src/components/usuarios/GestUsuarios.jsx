@@ -85,10 +85,10 @@ export const GestUsuarios = () => {
 
     return (
         <Fragment>
-            <div className="card shadow mt-4">
-                <div className="card-body">
+            <div className="card shadow mt-4 ">
+                <div className="card-body" style={{ maxHeight: '50%', overflow: 'scroll' }}>
                     <div className="row">
-                        <div className="col-md-4 col-lg-4 col-sm-12 mt-3">
+                        <div className="col-md-4 col-lg-4 col-sm-12 mt-3 p-0">
                             {
                                 mostrar ? <ActualizarPersonas id={id} setReload={setReload} reload={reload} />
                                     :

@@ -1,6 +1,8 @@
+import { Enviroments } from "../../enviroments/enviroments.url";
+
 export const getCajones = async () => {
 
-    const url = `http://localhost:3000/api/cajon`
+    const url = `${Enviroments.urlBack}/api/cajon`
     const respuesta = await fetch(url);
     const { cont } = await respuesta.json();
 
@@ -22,7 +24,7 @@ export const getCajones = async () => {
 
 export const getCajonesId = async (id) => {
 
-    const url = `http://localhost:3000/api/cajon/obtenerId/${id}`
+    const url = `${Enviroments.urlBack}/api/cajon/obtenerId/${id}`
     const respuesta = await fetch(url);
     console.log(respuesta)
     const { cont } = await respuesta.json();

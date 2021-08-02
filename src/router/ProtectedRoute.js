@@ -4,11 +4,13 @@ import { Navbar } from "../components/shared/Navbar"
 import { Footer } from "../components/shared/Footer.jsx";
 import jwt_decode from "jwt-decode";
 import Swal from "sweetalert2";
+import { useHistory } from 'react-router';
 
 
 
 
 function ProtectedRoute({ component: Component, role, ...restOfProps }) {
+    const history = useHistory();
     const isAuthenticated = localStorage.getItem("authorization");
     const [reload, setReload] = useState(false)
     let decoded = localStorage.getItem('authorization');
@@ -20,6 +22,7 @@ function ProtectedRoute({ component: Component, role, ...restOfProps }) {
                 icon: 'error',
                 text: 'No cuenta con permisos para acceder a esta ruta'
             })
+            history.push('/dashboard')
         }
     }
 
@@ -27,7 +30,7 @@ function ProtectedRoute({ component: Component, role, ...restOfProps }) {
     return (
         <>
             <Navbar setReload={setReload} reload={reload} />
-            <div className="container">
+            <div className="container container-buttom">
                 <Route
                     {...restOfProps}
                     render={(props) =>

@@ -12,6 +12,7 @@ export const RegistroPersona = ({ setReload }) => {
     const [paisSelect, setPaisSelect] = useState({ clave: '', nombre: '' });
     const [estadoSelect, setEstadoSelect] = useState({ clave: '', nombre: '' });
     const [esPais, setEsPais] = useState(true);
+    const [validarPassword, setValidarPassword] = useState(false)
     const initialState = {
         strNombre: '',
         strPrimerApellido: '',
@@ -21,6 +22,7 @@ export const RegistroPersona = ({ setReload }) => {
         strEstado: '',
         strPais: '',
         strContrasena: '',
+        strContrasena2: '',
         nmbTelefono: '',
         blnActivo: true
     }
@@ -62,7 +64,7 @@ export const RegistroPersona = ({ setReload }) => {
                 ...data,
                 strPais: clave
             });
-            const res = await axios.get(`http://localhost:3000/api/paises/estados/${clave}`);
+            const res = await axios.get(`${Enviroments.urlBack}/api/paises/estados/${clave}`);
             setEstados(res.data.cont.estadosMexico)
         } catch (error) {
             setEstados(error.response.data.cont.estadosMexico)
@@ -106,9 +108,7 @@ export const RegistroPersona = ({ setReload }) => {
                             showConfirmButton: false,
                             timer: 1500
                         })
-                        if (window.location.href == 'http://localhost:3001/auth/register') {
-                            history.push('/auth/login');
-                        }
+                        history.push('/auth/login');
                     })
             } catch (error) {
                 setReload(reload => !reload);
@@ -133,10 +133,9 @@ export const RegistroPersona = ({ setReload }) => {
     }
 
     return (
-        <div className="container">
+        <div className="container ">
             <h5 className="card-title">Registro de Personas</h5>
             <hr />
-
             <form onSubmit={handleSubmit} className="was-validated">
                 <div className="tableFixHead">
                     <div className="form-group mb-3">
@@ -172,6 +171,18 @@ export const RegistroPersona = ({ setReload }) => {
                         <div class="invalid-feedback">La longitud de la contraseña debe ser mayor a 7</div>
                     </div>
                     <div className="form-group mb-3">
+                        <label htmlFor="strContrasena2">Confirmar contraseña</label>
+                        <input type="password" className="form-control form-control-sm" style={{ border: data.strContrasena != data.strContrasena2 ? "1px solid red" : '' }} id="strContrasena2" placeholder="Contraseña" name="strContrasena2"
+                            value={data.strContrasena2}
+                            onChange={handleInputChange} required pattern={".{0}|.{8,}"} />
+                        {
+                            data.strContrasena != data.strContrasena2 &&
+                            <div style={{ color: 'red', fontSize: '12px' }} >Las contraseñas no coinciden</div>
+                        }
+
+
+                    </div>
+                    <div className="form-group mb-3">
                         <label htmlFor="nmbTelefono">Teléfono</label>
                         <input type="number" className="form-control form-control-sm" id="nmbTelefono" placeholder="Teléfono" name="nmbTelefono"
                             value={data.nmbTelefono}
@@ -204,7 +215,7 @@ export const RegistroPersona = ({ setReload }) => {
                 <div className=" form-group row text-right" >
                     <div className="col-12 text-center">
                         <button className="btn btn-danger m-1 " type="button" onClick={() => reset()}>Cancelar</button>
-                        <button className="btn btn-primary m-1" type="submit">Registrar</button>
+                        <button className="btn btn-primary m-1" type="submit" disabled={data.strContrasena != data.strContrasena2}>Registrar</button>
                     </div>
                 </div>
             </form >
